@@ -41,7 +41,7 @@ server.use('/api/', (req, res) => {
 
 const [htmlStart, htmlEnd] = Html({
   body: 'separator',
-  title: 'Skillcrucial'
+  title: 'Floodary'
 }).split('separator')
 
 server.get('/', (req, res) => {
