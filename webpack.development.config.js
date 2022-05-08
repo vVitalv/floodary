@@ -5,7 +5,6 @@ const fs = require('fs')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
@@ -37,21 +36,25 @@ const config = {
   mode: 'development',
   context: resolve(__dirname, 'client'),
   devServer: {
-    hotOnly: true,
-    contentBase: resolve(__dirname, 'dist/assets'),
-    watchContentBase: true,
-    host: '0.0.0.0',
+    hot: true,
+    open: true,
+    static: {
+      directory: resolve(__dirname, 'dist/assets'),
+      watch: true
+    },
+    host: 'localhost',
     port: CLIENT_PORT,
-    useLocalIp: true,
     historyApiFallback: true,
-    overlay: {
-      warnings: false,
-      errors: true
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true
+      }
     },
     proxy: [
       {
         context: ['/api', '/auth', '/ws', '/favicon.ico'],
-        target: 'http://0.0.0.0:8090',
+        target: 'http://localhost:8090',
         secure: false,
         changeOrigin: true,
         ws: process.env.ENABLE_SOCKETS === 'true'
@@ -176,11 +179,8 @@ const config = {
     new CopyWebpackPlugin(
       {
         patterns: [
-          { from: 'assets/images', to: 'images' },
-          { from: 'assets/fonts', to: 'fonts' },
           { from: 'assets/manifest.json', to: 'manifest.json' },
           { from: 'index.html', to: 'index.html' },
-
           {
             from: 'install-sw.js',
             to: 'js/install-sw.js',
@@ -212,7 +212,7 @@ const config = {
       overlay: {
         sockIntegration: 'wds'
       }
-    }), // new HardSourceWebpackPlugin(),
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin(
       Object.keys(process.env).reduce(

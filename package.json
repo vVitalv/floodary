@@ -1,7 +1,12 @@
 {
-    "name": "boilerplate-skillcrucial",
+    "name": "floodary",
     "version": "0.0.2",
-    "description": "Boilerplate SkillCrucial",
+    "description": "online notepad",
+    "engines": {
+        "node": "14.18.x",
+        "npm": "6.14.x",
+        "yarn": "1.22.x"
+    },
     "main": "index.js",
     "scripts": {
         "docker-start-dev": "docker-compose -f \"docker\\DEV.docker-compose.yml\" up",
@@ -24,11 +29,9 @@
         "build:ssr": "cross-env NODE_ENV=production webpack --config webpack.ssr.config.js --progress --profile --color",
         "build": "yarn run build:prod && yarn run build:ssr",
         "heroku-postbuild": "yarn run build:prod && yarn run build:ssr",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
         "prepare": "husky install"
     },
-    "author": "",
+    "author": "pepel",
     "license": "MIT",
     "jest": {
         "setupFiles": [
@@ -103,7 +106,7 @@
         "uuid": "^8.3.2"
     },
     "devDependencies": {
-        "@hot-loader/react-dom": "^17.0.1",
+        "@hot-loader/react-dom": "^17.0.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
         "autoprefixer": "^10.4.0",
         "copy-webpack-plugin": "^10.2.0",
@@ -123,7 +126,6 @@
         "file-loader": "6.2.0",
         "git-revision-webpack-plugin": "^5.0.0",
         "glob": "^7.2.0",
-        "hard-source-webpack-plugin": "^0.13.1",
         "husky": "^7.0.0",
         "image-webpack-loader": "^8.0.1",
         "jest": "^27.4.5",
@@ -148,7 +150,7 @@
         "url-loader": "4.1.1",
         "webpack": "^5.65.0",
         "webpack-cli": "^4.9.1",
-        "webpack-dev-server": "3.11.3",
+        "webpack-dev-server": "^4.9.0",
         "webpack-node-externals": "^3.0.0",
         "webpack-shell-plugin": "^0.5.0"
     },
