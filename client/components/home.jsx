@@ -6,7 +6,7 @@ import LoginForm from './auth/login'
 const Home = () => {
   return (
     <div>
-      <Head title="Dashboard" />
+      <Head title="Wellcome" />
       <LoginForm />
     </div>
   )

@@ -67,6 +67,7 @@
     "react/prop-types": "off",
     "linebreak-style": "off",
     "global-require": "off",
+    "default-param-last": "off",
     "semi": "off",
     "arrow-body-style": "off",
     "comma-dangle": "off",

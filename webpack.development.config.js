@@ -53,7 +53,7 @@ const config = {
     },
     proxy: [
       {
-        context: ['/api', '/auth', '/ws', '/favicon.ico'],
+        context: ['/api', '/auth', '/ws'],
         target: 'http://localhost:8090',
         secure: false,
         changeOrigin: true,
@@ -179,6 +179,7 @@ const config = {
     new CopyWebpackPlugin(
       {
         patterns: [
+          { from: 'assets/images', to: 'images' },
           { from: 'assets/manifest.json', to: 'manifest.json' },
           { from: 'index.html', to: 'index.html' },
           {

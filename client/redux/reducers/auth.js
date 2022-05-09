@@ -86,7 +86,7 @@ export function signIn() {
   }
 }
 
-export function register() {
+export function signUp() {
   return (dispatch, getState) => {
     const { login, password } = getState().auth
     fetch('/api/v1/regist', {
@@ -113,7 +113,7 @@ export function register() {
             })
           }, 5000)
         } else {
-         dispatch({ type: LOGIN, token: data.token, user: data.user })
+          dispatch({ type: LOGIN, token: data.token, user: data.user })
         }
       })
   }

@@ -153,6 +153,7 @@ const config = {
     new CopyWebpackPlugin(
       {
         patterns: [
+          { from: 'assets/images', to: 'images' },
           { from: 'assets/manifest.json', to: 'manifest.json' },
           { from: 'index.html', to: 'index.html' },
           {
