@@ -28,8 +28,7 @@
         "build:prod": "cross-env NODE_ENV=production webpack --config webpack.production.config.js --progress --profile --color",
         "build:ssr": "cross-env NODE_ENV=production webpack --config webpack.ssr.config.js --progress --profile --color",
         "build": "yarn run build:prod && yarn run build:ssr",
-        "heroku-postbuild": "yarn run build:prod && yarn run build:ssr",
-        "prepare": "husky install"
+        "heroku-postbuild": "yarn run build:prod && yarn run build:ssr"
     },
     "author": "pepel",
     "license": "MIT",
@@ -127,7 +126,6 @@
         "file-loader": "6.2.0",
         "git-revision-webpack-plugin": "^5.0.0",
         "glob": "^7.2.0",
-        "husky": "^7.0.0",
         "image-webpack-loader": "^8.0.1",
         "jest": "^27.4.5",
         "jest-cli": "^27.4.5",
@@ -151,7 +149,7 @@
         "url-loader": "4.1.1",
         "webpack": "^5.72.0",
         "webpack-cli": "^4.9.2",
-        "webpack-dev-server": "^4.5.0",
+        "webpack-dev-server": "^4.9.0",
         "webpack-node-externals": "^3.0.0",
         "webpack-shell-plugin": "^0.5.0"
     },
