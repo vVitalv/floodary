@@ -36,7 +36,7 @@ const LoginForm = () => {
                   />
                 </svg>
                 <input
-                  className="bg-amber-100 px-2 rounded-sm outline-none"
+                  className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
                   id="nickname"
                   value={login}
                   onChange={(e) => {
@@ -75,7 +75,7 @@ const LoginForm = () => {
                   />
                 </svg>
                 <input
-                  className="bg-amber-100 px-2 rounded-sm outline-none"
+                  className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
                   id="password"
                   value={password}
                   onChange={(e) => {
@@ -90,7 +90,7 @@ const LoginForm = () => {
             </div>
             <div className="flex justify-around my-2">
               <button
-                className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-200"
+                className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
                 type="button"
                 onClick={() => {
                   dispatch(signIn())
@@ -100,7 +100,7 @@ const LoginForm = () => {
               </button>
               <p className="p-1">or</p>
               <button
-                className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-200"
+                className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
                 type="button"
                 onClick={() => {
                   dispatch(signUp())

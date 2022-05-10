@@ -21,7 +21,7 @@ try {
 
 let connections = []
 
-const port = process.env.PORT || 8090
+const port = process.env.PORT
 const server = express()
 
 const middleware = [
