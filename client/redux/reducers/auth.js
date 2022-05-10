@@ -5,8 +5,6 @@ const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 const LOGIN = 'LOGIN'
 const LOGOUT = 'LOGOUT'
 const AUTH_ERR = 'AUTH_ERR'
-const REGIST_ERR = 'REGIST_ERR'
-const LOGIN_ERR = 'LOGIN_ERR'
 
 const cookies = new Cookies()
 
@@ -15,9 +13,7 @@ const initialState = {
   password: '',
   token: cookies.get('token'),
   user: {},
-  authErrMessage: '',
-  registErrMessage: '',
-  loginErrMessage: ''
+  authErrMessage: ''
 }
 
 export default (state = initialState, action) => {
@@ -33,12 +29,6 @@ export default (state = initialState, action) => {
     }
     case LOGOUT: {
       return { ...state, token: '', user: {} }
-    }
-    case REGIST_ERR: {
-      return { ...state, registErrMessage: action.registErrMessage }
-    }
-    case LOGIN_ERR: {
-      return { ...state, loginErrMessage: action.loginErrMessage }
     }
     case AUTH_ERR: {
       return { ...state, authErrMessage: action.authErrMessage }
@@ -72,11 +62,11 @@ export function signIn() {
       .then((r) => r.json())
       .then((data) => {
         if (data.status === 'error') {
-          dispatch({ type: LOGIN_ERR, loginErrMessage: `${data.message}: ${data.errorMessage}` })
+          dispatch({ type: AUTH_ERR, authErrMessage: `${data.message}: ${data.errorMessage}` })
           setTimeout(() => {
             dispatch({
-              type: LOGIN_ERR,
-              loginErrMessage: ''
+              type: AUTH_ERR,
+              authErrMessage: ''
             })
           }, 5000)
         } else {
@@ -103,15 +93,9 @@ export function signUp() {
       .then((data) => {
         if (data.status === 'error') {
           dispatch({
-            type: REGIST_ERR,
-            registErrMessage: `${data.message}: ${data.errorMessage}`
+            type: AUTH_ERR,
+            authErrMessage: `${data.message}: ${data.errorMessage}`
           })
-          setTimeout(() => {
-            dispatch({
-              type: REGIST_ERR,
-              registErrMessage: ''
-            })
-          }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
         }

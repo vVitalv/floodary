@@ -1,8 +1,9 @@
 {
-  "name": "SkillCrucial.com",
-  "short_name": "SC",
-  "theme_color": "#8bd8bd",
-  "background_color": "#243665",
+  "name": "Floodary",
+  "short_name": "FLD",
+  "icons": ["/images/icon.svg"],
+  "theme_color": "#fcd34d",
+  "background_color": "#64748b",
   "display": "browser",
   "scope": "/",
   "start_url": "/",
