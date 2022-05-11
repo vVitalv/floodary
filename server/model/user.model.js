@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
   }
 )
 
-userSchema.pre('save', async (next) => {
+userSchema.pre('save', async function passHashing(next) {
   if (!this.isModified('password')) {
     return next()
   }

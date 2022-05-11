@@ -1,4 +1,5 @@
 import Cookies from 'universal-cookie'
+import { history } from '..'
 
 const UPDATE_LOGIN = 'UPDATE_LOGIN'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
@@ -71,6 +72,7 @@ export function signIn() {
           }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
+          history.replace('/dashboard')
         }
       })
   }
@@ -96,14 +98,21 @@ export function signUp() {
             type: AUTH_ERR,
             authErrMessage: `${data.message}: ${data.errorMessage}`
           })
+          setTimeout(() => {
+            dispatch({
+              type: AUTH_ERR,
+              authErrMessage: ''
+            })
+          }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
+          history.replace('/dashboard')
         }
       })
   }
 }
 
-export function trySignIn() {
+export function signInAs() {
   return (dispatch) => {
     fetch('/api/v1/auth')
       .then((r) => r.json())

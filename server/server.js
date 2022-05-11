@@ -87,6 +87,8 @@ server.post('/api/v1/auth', async (req, res) => {
 
 server.post('/api/v1/regist', async (req, res) => {
   try {
+    const isUserExist = await User.findOne({ login: req.body.login })
+    if (isUserExist) throw new Error('Username already exists')
     const newUser = new User(req.body)
     await newUser.save()
     const { token, user } = await getTokenAndUser(req.body)

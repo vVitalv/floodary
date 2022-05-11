@@ -1,7 +1,13 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { updateLoginField, updatePasswordField, signIn, signUp } from '../../redux/reducers/auth'
+import {
+  updateLoginField,
+  updatePasswordField,
+  signIn,
+  signUp,
+  signInAs
+} from '../../redux/reducers/auth'
 
 const MIN_PASSWORD_LENGTH = 5
 const MIN_USERNAME_LENGTH = 2
@@ -10,7 +16,7 @@ const MAX_USERNAME_LENGTH = 20
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const { login, password, authErrMessage } = useSelector((store) => store.auth)
+  const { login, password, token, authErrMessage } = useSelector((store) => store.auth)
   const svgColor = (errQualifier, label, minLength) => {
     if (authErrMessage.includes(errQualifier)) {
       return '#f87171'
@@ -129,6 +135,17 @@ const LoginForm = () => {
                 Sign Up
               </button>
             </div>
+            {token && (
+              <button
+                className="bg-slate-400 grow font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+                type="button"
+                onClick={() => {
+                  dispatch(signInAs())
+                }}
+              >
+                Sign in as {login}
+              </button>
+            )}
           </div>
         </form>
       </div>
