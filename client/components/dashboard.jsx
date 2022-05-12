@@ -7,7 +7,7 @@ import Footer from './footer'
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col h-screen w-screen">
+    <div className="flex flex-col h-screen w-screen font-mono font-semibold text-amber-500">
       <Head title="Flood!" />
       <Header />
       <Chat />
