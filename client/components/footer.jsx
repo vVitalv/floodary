@@ -1,19 +1,21 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
-import { logOut } from '../../redux/reducers/auth'
-
-const Header = () => {
-  const dispatch = useDispatch()
+const Footer = () => {
   return (
-    <header className=" bg-slate-700">
-      <button type="button" onClick={() => dispatch(logOut())}>
-        logaout
-      </button>
-    </header>
+    <footer className="h-10 w-full bg-slate-700">
+      {'\u00A9'} 2022 CPL.Risitas{' '}
+      <a
+        className="[background:linear-gradient(#2563eb,#facc15)] [background-clip:text] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
+        href="https://skillcrucial.com"
+        target="_blank"
+        rel="noreferrer"
+      >
+        SkillCrucial
+      </a>
+    </footer>
   )
 }
 
-Header.propTypes = {}
+Footer.propTypes = {}
 
-export default React.memo(Header)
+export default React.memo(Footer)

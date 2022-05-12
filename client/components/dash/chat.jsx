@@ -1,17 +1,21 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-const Chat = () => {
+import Rooms from './rooms'
+import UserList from './users'
 
+const Chat = () => {
   const { login, password, token, user } = useSelector((store) => store.auth)
   return (
-    <main className="w-full h-screen bg-slate-400">
-      <ul>
-        <li>{login}</li>
-        <li>{password}</li>
-        <li>{token}</li>
-        <li>{user.login}</li>
-      </ul>
+    <main className="flex h-full grow break-all w-screen bg-slate-400">
+      <Rooms />
+      <div className="basis-2/3 break-words">
+        <div>{login}</div>
+        <div>{password}</div>
+        <div>{token}</div>
+        <div>{user.login}</div>
+      </div>
+      <UserList />
     </main>
   )
 }
