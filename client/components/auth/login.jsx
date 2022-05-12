@@ -16,7 +16,7 @@ const MAX_USERNAME_LENGTH = 20
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const { login, password, token, authErrMessage } = useSelector((store) => store.auth)
+  const { login, password, user, token, authErrMessage } = useSelector((store) => store.auth)
   const svgColor = (errQualifier, label, minLength) => {
     if (authErrMessage.includes(errQualifier)) {
       return '#f87171'
@@ -114,7 +114,7 @@ const LoginForm = () => {
                 {authErrMessage.includes('Pass') && authErrMessage}
               </p>
             </div>
-            <div className="flex justify-around my-2">
+            <div className="flex justify-between my-2">
               <button
                 className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
                 type="button"
@@ -137,13 +137,16 @@ const LoginForm = () => {
             </div>
             {token && (
               <button
-                className="bg-slate-400 grow font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+                className="group bg-slate-400 grow font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
                 type="button"
                 onClick={() => {
                   dispatch(signInAs())
                 }}
               >
-                Sign in as {login}
+                Or continue as{' '}
+                <span className="text-amber-900 transition-colors duration-200 group-hover:text-amber-500">
+                  {user.login}
+                </span>
               </button>
             )}
           </div>

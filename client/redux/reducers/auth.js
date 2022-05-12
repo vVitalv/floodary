@@ -13,7 +13,9 @@ const initialState = {
   login: '',
   password: '',
   token: cookies.get('token'),
-  user: {},
+  user: {
+    login: cookies.get('user-name')
+  },
   authErrMessage: ''
 }
 
@@ -124,6 +126,7 @@ export function signInAs() {
           })
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
+          history.replace('/dashboard')
         }
       })
   }

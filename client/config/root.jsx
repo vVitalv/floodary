@@ -14,7 +14,7 @@ import Startup from './startup'
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const { user, token } = useSelector((state) => state.auth)
   const func = (props) => {
-    if (!!user && !!token) <Redirect to={{ pathname: '/dashboard' }} />
+    if (!!user && !!user.password && !!token) <Redirect to={{ pathname: '/dashboard' }} />
     return <Component {...props} />
   }
   return <Route {...rest} render={func} />
@@ -23,7 +23,7 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { user, token } = useSelector((state) => state.auth)
   const func = (props) => {
-    if (!!user && !!token) return <Component {...props} />
+    if (!!user && !!user.password && !!token) return <Component {...props} />
 
     return (
       <Redirect

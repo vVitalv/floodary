@@ -59,8 +59,10 @@ async function getTokenAndUser(data) {
   return { token, user }
 }
 
-function createCookie(token, res) {
-  return res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+function createCookie(token, userName, res) {
+  return res
+    .cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+    .cookie('user-name', userName, { maxAge: 1000 * 60 * 60 * 48 })
 }
 
 server.get('/api/v1/auth', async (req, res) => {
@@ -68,7 +70,7 @@ server.get('/api/v1/auth', async (req, res) => {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
     const user = await User.findById(jwtUser.uid)
     const token = createToken(user)
-    createCookie(token, res)
+    createCookie(token, user.login, res)
     res.send({ status: 'ok', token, user })
   } catch (e) {
     res.send({ status: 'error', message: 'Authentification error', errorMessage: e.message })
@@ -78,7 +80,7 @@ server.get('/api/v1/auth', async (req, res) => {
 server.post('/api/v1/auth', async (req, res) => {
   try {
     const { token, user } = await getTokenAndUser(req.body)
-    createCookie(token, res)
+    createCookie(token, user.login, res)
     res.send({ status: 'ok', token, user })
   } catch (e) {
     res.send({ status: 'error', message: 'Sign in error', errorMessage: e.message })
@@ -92,7 +94,7 @@ server.post('/api/v1/regist', async (req, res) => {
     const newUser = new User(req.body)
     await newUser.save()
     const { token, user } = await getTokenAndUser(req.body)
-    createCookie(token, res)
+    createCookie(token, user.login, res)
     res.send({ status: 'ok', token, user })
   } catch (e) {
     res.send({ status: 'error', message: 'Registration error', errorMessage: e.message })
