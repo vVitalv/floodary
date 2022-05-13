@@ -1,7 +1,8 @@
 import express from 'express'
 import path from 'path'
 import cors from 'cors'
-import sockjs from 'sockjs'
+import http from 'http'
+import socketServer from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 import cookieParser from 'cookie-parser'
@@ -14,14 +15,12 @@ import passportJWT from './services/passport'
 import User from './model/user.model'
 import Html from '../client/html'
 
-require('colors')
-
 let Root
 try {
   // eslint-disable-next-line import/no-unresolved
-  Root = require('../dist/assets/js/ssr/root.bundle').default
+  Root = require('../dist/assets/js/ssr/root.bundle')
 } catch {
-  console.log('SSR not found. Please run "yarn run build:ssr"'.red)
+  console.log('SSR not found. Please run "yarn run build:ssr"')
 }
 
 let connections = []
@@ -30,6 +29,8 @@ mongoConnect()
 
 const port = process.env.PORT
 const server = express()
+const serve = http.createServer(server)
+const io = socketServer(serve)
 
 const middleware = [
   cors({
@@ -131,18 +132,10 @@ server.get('/*', (req, res) => {
   })
 })
 
-const app = server.listen(port)
+serve.listen(port)
 
-if (config.isSocketsEnabled) {
-  const echo = sockjs.createServer()
-  echo.on('connection', (conn) => {
-    connections.push(conn)
-    conn.on('data', async () => {})
+io.on('connection', (socket) => {
+  connections.push(socket)
+})
 
-    conn.on('close', () => {
-      connections = connections.filter((c) => c.readyState !== 3)
-    })
-  })
-  echo.installHandlers(app, { prefix: '/ws' })
-}
 console.log(`Serving at http://localhost:${port}`)

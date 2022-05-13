@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { logOut } from '../redux/reducers/auth'
+import { logOut } from '../../redux/reducers/auth'
 
 const Header = () => {
   const dispatch = useDispatch()

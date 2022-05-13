@@ -1,14 +1,14 @@
 import React from 'react'
 
-import Head from './head'
+import Head from '../head'
 import Header from './header'
-import Chat from './dash/chat'
+import Chat from './chat'
 import Footer from './footer'
 
 const Dashboard = () => {
   return (
     <div className="flex flex-col h-screen w-screen font-mono font-semibold text-amber-500">
-      <Head title="Flood!" />
+      <Head title="RoomName" />
       <Header />
       <Chat />
       <Footer />

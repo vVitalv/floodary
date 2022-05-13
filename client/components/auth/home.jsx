@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Head from './head'
-import LoginForm from './auth/login'
+import Head from '../head'
+import LoginForm from './login'
 
 const Home = () => {
   return (

@@ -57,7 +57,7 @@ const config = {
         target: 'http://localhost:8090',
         secure: false,
         changeOrigin: true,
-        ws: process.env.ENABLE_SOCKETS === 'true'
+        ws: process.env.ENABLE_SOCKETS || false
       }
     ]
   },
