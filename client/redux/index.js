@@ -5,6 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootReducer from './reducers'
 import createHistory from './history'
+import Init from './sockets/socketReceivers'
 
 export const history = createHistory()
 
@@ -17,5 +18,7 @@ const composeFunc = process.env.NODE_ENV === 'development' ? composeWithDevTools
 const composedEnhancers = composeFunc(applyMiddleware(...middleware), ...enhancers)
 
 const store = createStore(rootReducer(history), initialState, composedEnhancers)
+
+Init()
 
 export default store

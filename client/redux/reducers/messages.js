@@ -1,7 +1,7 @@
 const ADD_MESSAGE = 'ADD_MESSAGE'
 const UPDATE_CURRENT_ROOM = 'UPDATE_CURRENT_ROOM'
 const RECEIVED_NEW_MESSAGE = 'RECEIVED_NEW_MESSAGE'
-const DELETE_RECIVED_MESSAGES = 'DELETE_RECIVED_MESSAGES'
+const DELETE_RECEIVED_MESSAGES = 'DELETE_RECEIVED_MESSAGES'
 
 const initialState = {
   messages: '',
@@ -26,7 +26,7 @@ export default function messages(state = initialState, action) {
         currentRoom: action.roomName
       }
     }
-    case DELETE_RECIVED_MESSAGES: {
+    case DELETE_RECEIVED_MESSAGES: {
       return {
         ...state,
         receivedMess: []
@@ -58,8 +58,8 @@ export function receivedNewMessage(message) {
   }
 }
 
-export function deleteRecivedMessages() {
+export function deleteReceivedMessages() {
   return {
-    type: DELETE_RECIVED_MESSAGES
+    type: DELETE_RECEIVED_MESSAGES
   }
 }

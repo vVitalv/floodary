@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { addMessage } from '../../redux/reducers/messages'
+import { socket } from '../../redux/sockets/socketReceivers'
 
 const Dialog = () => {
   const dispatch = useDispatch()
@@ -11,7 +12,7 @@ const Dialog = () => {
       <div className="absolute bg-slate-200 w-fit rounded-br-xl px-6">
         {currentRoom.split('').join(' ')}
       </div>
-      <div className="text-gray-500 p-6">messages</div>
+      <div className="text-gray-500 p-6">message</div>
       <div className="absolute bottom-0 bg-slate-200 px-4">
         <input
           className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
@@ -26,6 +27,7 @@ const Dialog = () => {
           className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
           type="button"
           onClick={() => {
+            socket.emit('send mess', { messages, currentRoom })
             dispatch(addMessage(''))
           }}
         >

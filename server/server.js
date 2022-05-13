@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import cors from 'cors'
 import http from 'http'
-import socketServer from 'socket.io'
+import { Server } from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 import cookieParser from 'cookie-parser'
@@ -24,14 +24,15 @@ try {
   console.log('SSR not found. Please run "yarn run build:ssr"')
 }
 
-let connections = []
+const connections = []
+const userNames = {}
 
 mongoConnect()
 
-const port = process.env.PORT
+const port = process.env.PORT || 8090
 const server = express()
 const serve = http.createServer(server)
-const io = socketServer(serve)
+const io = new Server(serve)
 
 const middleware = [
   cors({
@@ -65,6 +66,11 @@ function createCookie(token, userName, res) {
   return res
     .cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     .cookie('user-name', userName, { maxAge: 1000 * 60 * 60 * 48 })
+}
+
+function getFormatMessages(messages) {
+  const formatedMessages = messages.map((it) => ({ [it.userName]: it.message }))
+  return formatedMessages
 }
 
 server.get('/api/v1/auth', async (req, res) => {
@@ -124,13 +130,15 @@ server.get('/', (req, res) => {
 })
 
 server.get('/*', (req, res) => {
-  const appStream = renderToStaticNodeStream(<Root location={req.url} context={{}} />)
-  res.write(htmlStart)
-  appStream.pipe(res, { end: false })
-  appStream.on('end', () => {
-    res.write(htmlEnd)
-    res.end()
-  })
+  const initialState = {
+    location: req.url
+  }
+  return res.send(
+    Html({
+      body: '',
+      initialState
+    })
+  )
 })
 
 serve.listen(port)
@@ -141,11 +149,12 @@ io.on('connection', (socket) => {
   socket.on('new login', async ({ token, currentRoom }) => {
     try {
       const user = jwt.verify(token, config.secret)
-      const { userName, role } = await User.findById(user.uid)
-      userNames[socket.id] = [userName, role]
+      const { login, role } = await User.findById(user.uid)
+      userNames[socket.id] = [login, role]
       if (role.indexOf('admin') !== -1) {
         socket.emit('all users', userNames)
       }
+      console.log(userNames)
       socket.join(currentRoom)
     } catch {
       console.log('tried to login without token')
@@ -186,7 +195,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect user', (id) => {
     io.to(id).emit('delete cookie')
-    io.of('/').sockets.get(id).disconnect()
+    io.of('/').in(id).disconnectSockets()
     delete userNames[id]
   })
 })
