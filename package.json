@@ -1,7 +1,7 @@
 {
     "name": "floodary",
     "version": "0.0.2",
-    "description": "online notepad",
+    "description": "ws chat",
     "engines": {
         "node": "16.15.x",
         "npm": "8.5.x",

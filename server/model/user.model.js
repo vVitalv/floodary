@@ -5,8 +5,10 @@ const userSchema = new mongoose.Schema(
   {
     login: {
       type: String,
-      required: true,
-      unique: true
+      required: [true, 'Username is required'],
+      unique: true,
+      minlength: [2, 'Username is too short'],
+      maxlength: 20
     },
     role: {
       type: [String],
@@ -14,7 +16,9 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true
+      required: [true, 'Password is required'],
+      minlength: [5, 'Password is too short'],
+      maxlength: 20
     }
   },
   {

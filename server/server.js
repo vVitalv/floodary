@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 import cors from 'cors'
-import http from 'http'
+import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
@@ -30,14 +30,17 @@ const userNames = {}
 mongoConnect()
 
 const port = process.env.PORT || 8090
-const server = express()
-const serve = http.createServer(server)
-const io = new Server(serve)
+const app = express()
+const httpServer = createServer(app)
+const io = new Server(
+  httpServer,
+  cors({
+    origin: 'http://localhost:8087/',
+    credentials: true
+  })
+)
 
 const middleware = [
-  cors({
-    origin: 'http://localhost:8087/'
-  }),
   express.static(path.resolve(__dirname, '../dist/assets')),
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
   express.json({ limit: '50mb', extended: true }),
@@ -45,7 +48,7 @@ const middleware = [
   passport.initialize()
 ]
 
-middleware.forEach((it) => server.use(it))
+middleware.forEach((it) => app.use(it))
 
 passport.use('jwt', passportJWT)
 
@@ -73,7 +76,7 @@ function getFormatMessages(messages) {
   return formatedMessages
 }
 
-server.get('/api/v1/auth', async (req, res) => {
+app.get('/api/v1/auth', async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
     const user = await User.findById(jwtUser.uid)
@@ -85,7 +88,7 @@ server.get('/api/v1/auth', async (req, res) => {
   }
 })
 
-server.post('/api/v1/auth', async (req, res) => {
+app.post('/api/v1/auth', async (req, res) => {
   try {
     const { token, user } = await getTokenAndUser(req.body)
     createCookie(token, user.login, res)
@@ -95,7 +98,7 @@ server.post('/api/v1/auth', async (req, res) => {
   }
 })
 
-server.post('/api/v1/regist', async (req, res) => {
+app.post('/api/v1/regist', async (req, res) => {
   try {
     const isUserExist = await User.findOne({ login: req.body.login })
     if (isUserExist) throw new Error('Username already exists')
@@ -105,11 +108,24 @@ server.post('/api/v1/regist', async (req, res) => {
     createCookie(token, user.login, res)
     res.send({ status: 'ok', token, user })
   } catch (e) {
-    res.send({ status: 'error', message: 'Registration error', errorMessage: e.message })
+    if (e.name === 'ValidationError') {
+      const doc = Object.keys(e.errors)[0]
+      res.send({
+        status: 'error',
+        message: 'Registration error',
+        errorMessage: e.errors[doc].message
+      })
+    } else {
+      res.send({
+        status: 'error',
+        message: 'Registration error',
+        errorMessage: e.message
+      })
+    }
   }
 })
 
-server.use('/api/', (req, res) => {
+app.use('/api/', (req, res) => {
   res.status(404)
   res.end()
 })
@@ -119,7 +135,7 @@ const [htmlStart, htmlEnd] = Html({
   title: 'Floodary'
 }).split('separator')
 
-server.get('/', (req, res) => {
+app.get('/', (req, res) => {
   const appStream = renderToStaticNodeStream(<Root location={req.url} context={{}} />)
   res.write(htmlStart)
   appStream.pipe(res, { end: false })
@@ -129,7 +145,7 @@ server.get('/', (req, res) => {
   })
 })
 
-server.get('/*', (req, res) => {
+app.get('/*', (req, res) => {
   const initialState = {
     location: req.url
   }
@@ -140,8 +156,6 @@ server.get('/*', (req, res) => {
     })
   )
 })
-
-serve.listen(port)
 
 io.on('connection', (socket) => {
   connections.push(socket)
@@ -154,7 +168,6 @@ io.on('connection', (socket) => {
       if (role.indexOf('admin') !== -1) {
         socket.emit('all users', userNames)
       }
-      console.log(userNames)
       socket.join(currentRoom)
     } catch {
       console.log('tried to login without token')
@@ -200,4 +213,5 @@ io.on('connection', (socket) => {
   })
 })
 
+httpServer.listen(port)
 console.log(`Serving at http://localhost:${port}`)

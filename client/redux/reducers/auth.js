@@ -16,7 +16,7 @@ const initialState = {
   user: {
     login: cookies.get('user-name')
   },
-  authErrMessage: ''
+  authErrMessage: { message: '', errorMessage: '' }
 }
 
 export default (state = initialState, action) => {
@@ -34,7 +34,10 @@ export default (state = initialState, action) => {
       return { ...state, token: '', user: {} }
     }
     case AUTH_ERR: {
-      return { ...state, authErrMessage: action.authErrMessage }
+      return {
+        ...state,
+        authErrMessage: { message: action.message, errorMessage: action.errorMessage }
+      }
     }
     default:
       return state
@@ -65,11 +68,12 @@ export function signIn() {
       .then((r) => r.json())
       .then((data) => {
         if (data.status === 'error') {
-          dispatch({ type: AUTH_ERR, authErrMessage: `${data.message}: ${data.errorMessage}` })
+          dispatch({ type: AUTH_ERR, message: data.message, errorMessage: data.errorMessage })
           setTimeout(() => {
             dispatch({
               type: AUTH_ERR,
-              authErrMessage: ''
+              message: '',
+              errorMessage: ''
             })
           }, 5000)
         } else {
@@ -98,12 +102,14 @@ export function signUp() {
         if (data.status === 'error') {
           dispatch({
             type: AUTH_ERR,
-            authErrMessage: `${data.message}: ${data.errorMessage}`
+            message: data.message,
+            errorMessage: data.errorMessage
           })
           setTimeout(() => {
             dispatch({
               type: AUTH_ERR,
-              authErrMessage: ''
+              message: '',
+              errorMessage: ''
             })
           }, 5000)
         } else {
@@ -122,7 +128,8 @@ export function signInAs() {
         if (data.status === 'error') {
           dispatch({
             type: AUTH_ERR,
-            authErrMessage: `${data.message}: ${data.errorMessage}`
+            message: data.message,
+            errorMessage: data.errorMessage
           })
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })

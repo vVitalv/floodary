@@ -6,9 +6,20 @@ import { updateSocketsInfo } from '../reducers/adminInformation'
 import { logOut } from '../reducers/auth'
 import store from '../index'
 
-export const socket = io('http://localhost:8090', { transports: ['websocket'], autoConnect: false })
+export const socket = io('http://localhost:8090', {
+  transports: ['websocket'],
+  withCredentials: true
+})
 
-function Init() {
+function wsInit() {
+  socket.on('connect', () => {
+    const { token } = store.getState().auth
+    const { currentRoom } = store.getState().messages
+    store.dispatch(deleteReceivedMessages())
+    socket.emit('new login', { token, currentRoom })
+    socket.emit('load history', currentRoom)
+  })
+
   socket.on('new message', (msg) => {
     store.dispatch(receivedNewMessage(msg))
   })
@@ -17,14 +28,6 @@ function Init() {
     if (reason === 'io server disconnect') {
       socket.connect()
     }
-  })
-
-  socket.on('connect', () => {
-    const { token } = store.getState().auth
-    const { currentRoom } = store.getState().messages
-    store.dispatch(deleteReceivedMessages())
-    socket.emit('new login', { token, currentRoom })
-    socket.emit('load history', currentRoom)
   })
 
   socket.on('history messages', (messages) => {
@@ -42,4 +45,4 @@ function Init() {
   })
 }
 
-export default Init
+export default wsInit

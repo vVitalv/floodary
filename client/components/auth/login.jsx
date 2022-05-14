@@ -17,8 +17,9 @@ const MAX_USERNAME_LENGTH = 20
 const LoginForm = () => {
   const dispatch = useDispatch()
   const { login, password, user, token, authErrMessage } = useSelector((store) => store.auth)
+  const { errorMessage } = authErrMessage
   const svgColor = (errQualifier, label, minLength) => {
-    if (authErrMessage.includes(errQualifier)) {
+    if (errorMessage.includes(errQualifier)) {
       return '#f87171'
     }
     if (label.length >= minLength) {
@@ -67,7 +68,7 @@ const LoginForm = () => {
                 />
               </div>
               <p className="h-4 font-normal text-xs text-red-300">
-                {authErrMessage.includes('User') && authErrMessage}
+                {errorMessage.includes('User') && errorMessage}
               </p>
             </div>
             <div className="flex flex-col gap-y-1">
@@ -111,7 +112,7 @@ const LoginForm = () => {
                 />
               </div>
               <p className="h-4 font-normal text-xs text-red-300">
-                {authErrMessage.includes('Pass') && authErrMessage}
+                {errorMessage.includes('Pass') && errorMessage}
               </p>
             </div>
             <div className="flex justify-between my-2">

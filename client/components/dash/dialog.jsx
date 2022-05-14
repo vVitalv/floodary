@@ -6,13 +6,18 @@ import { socket } from '../../redux/sockets/socketReceivers'
 
 const Dialog = () => {
   const dispatch = useDispatch()
-  const { messages, currentRoom } = useSelector((store) => store.messages)
+  const { messages, currentRoom, receivedMess } = useSelector((store) => store.messages)
   return (
     <div className="relative basis-2/3 border-x-2 border-x-amber-200">
       <div className="absolute bg-slate-200 w-fit rounded-br-xl px-6">
         {currentRoom.split('').join(' ')}
       </div>
-      <div className="text-gray-500 p-6">message</div>
+      <div className="text-gray-500 p-6">
+        {receivedMess.map((msg, ind) => {
+          const msgEntries = Object.entries(msg)
+          return <p key={ind + 2}>{`${msgEntries[0][0]}: ${msgEntries[0][1]}`}</p>
+        })}
+      </div>
       <div className="absolute bottom-0 bg-slate-200 px-4">
         <input
           className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
