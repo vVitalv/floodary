@@ -1,16 +1,14 @@
 import React from 'react'
 
-import Rooms from './rooms'
 import Dialog from './dialog'
 import UserList from './users'
 
 const Chat = () => {
   return (
-    <main className="flex h-full grow break-all w-screen bg-slate-50">
-      <Rooms />
+    <div className="flex basis-4/5 border-x-2 border-x-amber-200">
       <Dialog />
       <UserList />
-    </main>
+    </div>
   )
 }
 
