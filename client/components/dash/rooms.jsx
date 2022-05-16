@@ -5,8 +5,9 @@ const Rooms = () => {
   const { currentRoom } = useSelector((store) => store.messages)
 
   return (
-    <div className="flex h-10 bg-slate-200 p-4 text-gray-500">
-      <div className="bg-slate-200 p-4 text-gray-500 rounded-t-md">{currentRoom}</div>
+    <div className="flex pt-1 px-2">
+      <div className="px-3 rounded-t-xl bg-slate-300">+</div>
+      <div className="bg-amber-200 px-2 rounded-t-xl">{currentRoom}</div>
     </div>
   )
 }

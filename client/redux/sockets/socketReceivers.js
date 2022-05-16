@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client'
+/*
 import Cookies from 'universal-cookie'
 
 import { receivedNewMessage, deleteReceivedMessages } from '../reducers/messages'
@@ -10,7 +11,16 @@ export const socket = io('http://localhost:8090', {
   transports: ['websocket'],
   withCredentials: true
 })
+*/
+export const socket = io()
 
+export function wsInit() {
+socket.on('connect', () => {
+  console.log(`${socket.id} client connected`)
+})
+}
+
+/*
 function wsInit() {
   socket.on('connect', () => {
     const { token } = store.getState().auth
@@ -19,7 +29,7 @@ function wsInit() {
     socket.emit('new login', { token, currentRoom })
     socket.emit('load history', currentRoom)
   })
-
+console.log(socket.id)
   socket.on('new message', (msg) => {
     store.dispatch(receivedNewMessage(msg))
   })
@@ -44,5 +54,5 @@ function wsInit() {
     store.dispatch(logOut())
   })
 }
+*/
 
-export default wsInit

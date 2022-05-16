@@ -1,6 +1,5 @@
 import express from 'express'
 import path from 'path'
-import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
@@ -13,7 +12,7 @@ import config from './config'
 import mongoConnect from './services/mongoose'
 import passportJWT from './services/passport'
 import User from './model/user.model'
-import Message from './model/message.model'
+// import Message from './model/message.model'
 import Html from '../client/html'
 
 let Root
@@ -24,21 +23,15 @@ try {
   console.log('SSR not found. Please run "yarn run build:ssr"')
 }
 
-const connections = []
-const userNames = {}
+// const connections = []
+// const userNames = {}
 
 mongoConnect()
 
 const port = process.env.PORT || 8090
 const app = express()
 const httpServer = createServer(app)
-const io = new Server(
-  httpServer,
-  cors({
-    origin: 'http://localhost:8087/',
-    credentials: true
-  })
-)
+const io = new Server(httpServer)
 
 const middleware = [
   express.static(path.resolve(__dirname, '../dist/assets')),
@@ -158,6 +151,13 @@ app.get('/*', (req, res) => {
 })
 
 io.on('connection', (socket) => {
+  console.log(`${socket.id} server connected`)
+
+  socket.on('send mess', (m, r) => console.log(m, r))
+})
+
+/*
+io.on('connection', (socket) => {
   connections.push(socket)
 
   socket.on('new login', async ({ token, currentRoom }) => {
@@ -212,6 +212,7 @@ io.on('connection', (socket) => {
     delete userNames[id]
   })
 })
+*/
 
 httpServer.listen(port)
 console.log(`Serving at http://localhost:${port}`)

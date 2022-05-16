@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootReducer from './reducers'
 import createHistory from './history'
-import wsInit from './sockets/socketReceivers'
+import { wsInit } from './sockets/socketReceivers'
 
 export const history = createHistory()
 

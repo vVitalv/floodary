@@ -5,7 +5,7 @@ import UserList from './users'
 
 const Chat = () => {
   return (
-    <div className="flex basis-4/5 border-x-2 border-x-amber-200">
+    <div className="flex grow basis-4/5">
       <Dialog />
       <UserList />
     </div>

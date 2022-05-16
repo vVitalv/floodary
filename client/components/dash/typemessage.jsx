@@ -8,18 +8,17 @@ const TypeMessage = () => {
   const dispatch = useDispatch()
   const { messages, currentRoom } = useSelector((store) => store.messages)
   return (
-    <div className="bg-slate-200 px-4">
-      <input
-        className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
+    <div className="flex h-10 p-2 gap-2 px-4">
+      <textarea
+        className="bg-amber-100 text-gray-600 grow px-2 rounded-md outline-none resize-none"
         id="message"
         value={messages}
         onChange={(e) => dispatch(addMessage(e.target.value))}
-        type="text"
         placeholder="Flood here"
         autoComplete="off"
       />
       <button
-        className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+        className="bg-slate-400 font-semibold text-xs rounded-md transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
         type="button"
         onClick={() => {
           socket.emit('send mess', { messages, currentRoom })
