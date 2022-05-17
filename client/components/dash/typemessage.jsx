@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { addMessage } from '../../redux/reducers/messages'
-import { socket } from '../../redux/sockets/socketReceivers'
+import { sendMessage } from '../../redux/sockets/socketReceivers'
 
 const TypeMessage = () => {
   const dispatch = useDispatch()
@@ -21,7 +21,7 @@ const TypeMessage = () => {
         className="bg-slate-400 font-semibold text-xs rounded-md transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
         type="button"
         onClick={() => {
-          socket.emit('send mess', { messages, currentRoom })
+          sendMessage(messages, currentRoom)
           dispatch(addMessage(''))
         }}
       >

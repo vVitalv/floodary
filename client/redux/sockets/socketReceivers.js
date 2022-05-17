@@ -12,14 +12,49 @@ export const socket = io('http://localhost:8090', {
   withCredentials: true
 })
 */
-export const socket = io()
+import store from '../index'
+import { receivedNewMessage } from '../reducers/messages'
 
-export function wsInit() {
-socket.on('connect', () => {
-  console.log(`${socket.id} client connected`)
+export const socket = io('http://localhost:8090', {
+  transports: ['websocket'],
+  withCredentials: true
 })
+
+socket.on('connect', () => {
+  console.log('Socket client connected')
+  socket.emit('load history', 'Lobbio')
+})
+
+socket.on('history messages', (msgs) => {
+  store.dispatch(receivedNewMessage(msgs))
+})
+
+export function socketLogin(token, currentRoom) {
+  socket.emit('new login', { token, currentRoom })
 }
 
+export function sendMessage(messages, currentRoom) {
+  socket.emit('send mess', { messages, currentRoom, date: Date.now() })
+}
+
+socket.on('new message', (msg) => {
+  store.dispatch(receivedNewMessage(msg))
+})
+/*
+export function socketLogout() {
+  socket.emit('close socket')
+}
+*/
+export function socketLogout() {
+  socket.disconnect()
+}
+
+socket.on('disconnect', (reason) => {
+  console.log(`Client disconnected: ${reason}`)
+  if (reason === 'io client disconnect') {
+    socket.connect()
+  }
+})
 /*
 function wsInit() {
   socket.on('connect', () => {
@@ -35,7 +70,7 @@ console.log(socket.id)
   })
 
   socket.on('disconnect', (reason) => {
-    if (reason === 'io server disconnect') {
+    if (reason === 'server namespace disconnect') {
       socket.connect()
     }
   })
@@ -55,4 +90,3 @@ console.log(socket.id)
   })
 }
 */
-

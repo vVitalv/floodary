@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootReducer from './reducers'
 import createHistory from './history'
-import { wsInit } from './sockets/socketReceivers'
+// import { socketConnect } from './sockets/socketReceivers'
 
 export const history = createHistory()
 
@@ -19,6 +19,6 @@ const composedEnhancers = composeFunc(applyMiddleware(...middleware), ...enhance
 
 const store = createStore(rootReducer(history), initialState, composedEnhancers)
 
-wsInit()
+// socketConnect()
 
 export default store

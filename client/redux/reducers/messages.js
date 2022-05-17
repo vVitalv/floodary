@@ -5,7 +5,7 @@ const DELETE_RECEIVED_MESSAGES = 'DELETE_RECEIVED_MESSAGES'
 
 const initialState = {
   messages: '',
-  currentRoom: 'general',
+  currentRoom: 'Lobbio',
   receivedMess: []
 }
 

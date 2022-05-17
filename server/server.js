@@ -1,5 +1,6 @@
 import express from 'express'
 import path from 'path'
+import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
@@ -12,7 +13,7 @@ import config from './config'
 import mongoConnect from './services/mongoose'
 import passportJWT from './services/passport'
 import User from './model/user.model'
-// import Message from './model/message.model'
+import Message from './model/message.model'
 import Html from '../client/html'
 
 let Root
@@ -24,14 +25,19 @@ try {
 }
 
 // const connections = []
-// const userNames = {}
+const userNames = {}
 
 mongoConnect()
 
 const port = process.env.PORT || 8090
 const app = express()
 const httpServer = createServer(app)
-const io = new Server(httpServer)
+const io = new Server(httpServer, {
+  cors: {
+    origin: `http://localhost:${port}`,
+    credentials: true
+  }
+})
 
 const middleware = [
   express.static(path.resolve(__dirname, '../dist/assets')),
@@ -62,11 +68,6 @@ function createCookie(token, userName, res) {
   return res
     .cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     .cookie('user-name', userName, { maxAge: 1000 * 60 * 60 * 48 })
-}
-
-function getFormatMessages(messages) {
-  const formatedMessages = messages.map((it) => ({ [it.userName]: it.message }))
-  return formatedMessages
 }
 
 app.get('/api/v1/auth', async (req, res) => {
@@ -151,9 +152,52 @@ app.get('/*', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-  console.log(`${socket.id} server connected`)
+  console.log(`Server: ${socket.id} socket connected`)
 
-  socket.on('send mess', (m, r) => console.log(m, r))
+  socket.on('load history', async (roomName) => {
+    try {
+      const messages = await Message.find({ room: roomName })
+      const messagesHistory = messages.map((it) => ({
+        [it.userName]: it.message,
+        date: it.date
+      }))
+      socket.emit('history messages', messagesHistory)
+    } catch {
+      console.log('No room history')
+    }
+  })
+
+  socket.on('new login', async ({ token, currentRoom }) => {
+    try {
+      const user = jwt.verify(token, config.secret)
+      const { login, role } = await User.findById(user.uid)
+      userNames[socket.id] = [login, role]
+      socket.join(currentRoom)
+    } catch {
+      console.log('tried to login without token')
+    }
+  })
+
+  socket.on('send mess', async ({ messages, currentRoom, date }) => {
+    try {
+      const newMessage = new Message({
+        userName: userNames[socket.id][0],
+        message: messages,
+        room: currentRoom,
+        date
+      })
+      await newMessage.save()
+    } catch (err) {
+      console.log(`err${err}`)
+    }
+    io.to(currentRoom).emit('new message', { [userNames[socket.id][0]]: messages, date })
+  })
+
+  socket.on('disconnect', (reason) => {
+    console.log(`Socket ${socket.id} disconnected because: ${reason}`)
+    console.log(userNames)
+    delete userNames[socket.id]
+  })
 })
 
 /*

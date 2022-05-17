@@ -1,5 +1,6 @@
 import Cookies from 'universal-cookie'
 import { history } from '..'
+import { socketLogin, socketLogout } from '../sockets/socketReceivers'
 
 const UPDATE_LOGIN = 'UPDATE_LOGIN'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
@@ -55,6 +56,7 @@ export function updatePasswordField(password) {
 export function signIn() {
   return (dispatch, getState) => {
     const { login, password } = getState().auth
+    const { currentRoom } = getState().messages
     fetch('/api/v1/auth', {
       method: 'POST',
       headers: {
@@ -78,6 +80,7 @@ export function signIn() {
           }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
+          socketLogin(data.token, currentRoom)
           history.replace('/dashboard')
         }
       })
@@ -87,6 +90,7 @@ export function signIn() {
 export function signUp() {
   return (dispatch, getState) => {
     const { login, password } = getState().auth
+    const { currentRoom } = getState().messages
     fetch('/api/v1/regist', {
       method: 'POST',
       headers: {
@@ -114,6 +118,7 @@ export function signUp() {
           }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
+          socketLogin(data.token, currentRoom)
           history.replace('/dashboard')
         }
       })
@@ -121,7 +126,8 @@ export function signUp() {
 }
 
 export function signInAs() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { currentRoom } = getState().messages
     fetch('/api/v1/auth')
       .then((r) => r.json())
       .then((data) => {
@@ -133,6 +139,7 @@ export function signInAs() {
           })
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
+          socketLogin(data.token, currentRoom)
           history.replace('/dashboard')
         }
       })
@@ -140,5 +147,6 @@ export function signInAs() {
 }
 
 export function logOut() {
+  socketLogout()
   return { type: LOGOUT }
 }
