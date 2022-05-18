@@ -18,7 +18,7 @@ const TypeMessage = () => {
         autoComplete="off"
       />
       <button
-        className="bg-slate-400 font-semibold text-xs rounded-md transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+        className="bg-slate-300 font-semibold text-xs rounded-md px-2 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-500"
         type="button"
         onClick={() => {
           sendMessage(messages, currentRoom)

@@ -15,10 +15,7 @@ export const socket = io('http://localhost:8090', {
 import store from '../index'
 import { receivedNewMessage } from '../reducers/messages'
 
-export const socket = io('http://localhost:8090', {
-  transports: ['websocket'],
-  withCredentials: true
-})
+export const socket = io({ transports: ['websocket'] })
 
 socket.on('connect', () => {
   console.log('Socket client connected')
@@ -40,17 +37,13 @@ export function sendMessage(messages, currentRoom) {
 socket.on('new message', (msg) => {
   store.dispatch(receivedNewMessage(msg))
 })
-/*
-export function socketLogout() {
-  socket.emit('close socket')
-}
-*/
+
 export function socketLogout() {
   socket.disconnect()
 }
 
 socket.on('disconnect', (reason) => {
-  console.log(`Client disconnected: ${reason}`)
+  console.log(`Socket disconnected: ${reason}`)
   if (reason === 'io client disconnect') {
     socket.connect()
   }

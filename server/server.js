@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-import cors from 'cors'
+// import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
@@ -32,13 +32,15 @@ mongoConnect()
 const port = process.env.PORT || 8090
 const app = express()
 const httpServer = createServer(app)
+const io = new Server(httpServer)
+/*
 const io = new Server(httpServer, {
   cors: {
     origin: `http://localhost:${port}`,
     credentials: true
   }
 })
-
+*/
 const middleware = [
   express.static(path.resolve(__dirname, '../dist/assets')),
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
@@ -157,11 +159,13 @@ io.on('connection', (socket) => {
   socket.on('load history', async (roomName) => {
     try {
       const messages = await Message.find({ room: roomName })
+      /*
       const messagesHistory = messages.map((it) => ({
         [it.userName]: it.message,
         date: it.date
       }))
-      socket.emit('history messages', messagesHistory)
+      */
+      socket.emit('history messages', messages)
     } catch {
       console.log('No room history')
     }
@@ -187,10 +191,10 @@ io.on('connection', (socket) => {
         date
       })
       await newMessage.save()
+      io.to(currentRoom).emit('new message', newMessage)
     } catch (err) {
-      console.log(`err${err}`)
+      console.log(`Send message error: ${err}`)
     }
-    io.to(currentRoom).emit('new message', { [userNames[socket.id][0]]: messages, date })
   })
 
   socket.on('disconnect', (reason) => {
