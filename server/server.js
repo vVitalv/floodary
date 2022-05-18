@@ -159,13 +159,8 @@ io.on('connection', (socket) => {
   socket.on('load history', async (roomName) => {
     try {
       const messages = await Message.find({ room: roomName })
-      /*
-      const messagesHistory = messages.map((it) => ({
-        [it.userName]: it.message,
-        date: it.date
-      }))
-      */
-      socket.emit('history messages', messages)
+      const messagesHistory = messages.map((it) => [it.userName, it.message, it.date])
+      socket.emit('history messages', messagesHistory)
     } catch {
       console.log('No room history')
     }
@@ -191,7 +186,11 @@ io.on('connection', (socket) => {
         date
       })
       await newMessage.save()
-      io.to(currentRoom).emit('new message', newMessage)
+      io.to(currentRoom).emit('new message', [[
+        newMessage.userName,
+        newMessage.message,
+        newMessage.date
+      ]])
     } catch (err) {
       console.log(`Send message error: ${err}`)
     }

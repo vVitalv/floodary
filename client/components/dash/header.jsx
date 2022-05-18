@@ -5,12 +5,12 @@ import { logOut } from '../../redux/reducers/auth'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { user } = useSelector((store) => store.auth)
+  const { login } = useSelector((store) => store.auth.user)
   return (
     <header className="flex justify-between items-center h-10 px-4 w-full bg-slate-700">
       f l o o d a r y
       <p>
-        {user.login}
+        {login}
         <button
           className="ml-2 text-xs text-gray-400 transition-colors duration-200 hover:text-amber-300 "
           type="button"
