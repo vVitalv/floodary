@@ -26,6 +26,11 @@ try {
 
 // const connections = []
 const userNames = {}
+const onlineList = () => {
+  return Object.keys(userNames).map((id) => {
+    return userNames[id][0]
+  })
+}
 
 mongoConnect()
 
@@ -33,14 +38,7 @@ const port = process.env.PORT || 8090
 const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer)
-/*
-const io = new Server(httpServer, {
-  cors: {
-    origin: `http://localhost:${port}`,
-    credentials: true
-  }
-})
-*/
+
 const middleware = [
   express.static(path.resolve(__dirname, '../dist/assets')),
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
@@ -172,6 +170,8 @@ io.on('connection', (socket) => {
       const { login, role } = await User.findById(user.uid)
       userNames[socket.id] = [login, role]
       socket.join(currentRoom)
+      console.log(Array.from(socket.rooms), onlineList())
+      io.in(Array.from(socket.rooms)).emit('users online', onlineList())
     } catch {
       console.log('Tried to login without token')
     }
@@ -186,11 +186,9 @@ io.on('connection', (socket) => {
         date
       })
       await newMessage.save()
-      io.to(currentRoom).emit('new message', [[
-        newMessage.userName,
-        newMessage.message,
-        newMessage.date
-      ]])
+      io.to(currentRoom).emit('new message', [
+        [newMessage.userName, newMessage.message, newMessage.date]
+      ])
     } catch (err) {
       console.log(`Send message error: ${err}`)
     }
@@ -199,6 +197,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', (reason) => {
     console.log(`Socket ${socket.id} disconnected because: ${reason}`)
     delete userNames[socket.id]
+    io.in(Array.from(socket.rooms)).emit('users online', onlineList())
   })
 })
 

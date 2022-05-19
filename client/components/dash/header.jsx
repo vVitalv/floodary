@@ -2,13 +2,13 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { logOut } from '../../redux/reducers/auth'
-import { deleteReceivedMessages } from '../../redux/reducers/messages'
+import { purgeHistory } from '../../redux/reducers/messages'
 
 const Header = () => {
   const dispatch = useDispatch()
   const { login } = useSelector((store) => store.auth.user)
   const logOutAndPurge = () => {
-    dispatch(deleteReceivedMessages())
+    dispatch(purgeHistory())
     dispatch(logOut())
   }
   return (

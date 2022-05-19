@@ -13,7 +13,7 @@ export const socket = io('http://localhost:8090', {
 })
 */
 import store from '../index'
-import { receivedNewMessage } from '../reducers/messages'
+import { receiveNewMessage, updateUsersOnline } from '../reducers/messages'
 
 export const socket = io({ transports: ['websocket'] })
 
@@ -23,19 +23,23 @@ socket.on('connect', () => {
 })
 
 socket.on('history messages', (msgs) => {
-  store.dispatch(receivedNewMessage(msgs))
+  store.dispatch(receiveNewMessage(msgs))
 })
 
 export function socketLogin(token, currentRoom) {
   socket.emit('new login', { token, currentRoom })
 }
 
+socket.on('users online', (onlineList) => {
+  store.dispatch(updateUsersOnline(onlineList))
+})
+
 export function sendMessage(messages, currentRoom) {
   socket.emit('send mess', { messages, currentRoom, date: Date.now() })
 }
 
 socket.on('new message', (msg) => {
-  store.dispatch(receivedNewMessage(msg))
+  store.dispatch(receiveNewMessage(msg))
 })
 
 export function socketLogout() {

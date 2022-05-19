@@ -1,12 +1,14 @@
 const ADD_MESSAGE = 'ADD_MESSAGE'
 const UPDATE_CURRENT_ROOM = 'UPDATE_CURRENT_ROOM'
-const RECEIVED_NEW_MESSAGE = 'RECEIVED_NEW_MESSAGE'
-const DELETE_RECEIVED_MESSAGES = 'DELETE_RECEIVED_MESSAGES'
+const UPDATE_USERS = 'UPDATE_USERS'
+const RECEIVE_NEW_MESSAGE = 'RECEIVE_NEW_MESSAGE'
+const PURGE_HISTORY = 'PURGE_HISTORY'
 
 const initialState = {
   messages: '',
   currentRoom: 'Lobbio',
-  receivedMess: []
+  messageHistory: [],
+  usersOnline: []
 }
 
 export default function messages(state = initialState, action) {
@@ -14,10 +16,10 @@ export default function messages(state = initialState, action) {
     case ADD_MESSAGE: {
       return { ...state, messages: action.message }
     }
-    case RECEIVED_NEW_MESSAGE: {
+    case RECEIVE_NEW_MESSAGE: {
       return {
         ...state,
-        receivedMess: [...state.receivedMess, ...action.message]
+        messageHistory: [...state.messageHistory, ...action.message]
       }
     }
     case UPDATE_CURRENT_ROOM: {
@@ -26,10 +28,17 @@ export default function messages(state = initialState, action) {
         currentRoom: action.roomName
       }
     }
-    case DELETE_RECEIVED_MESSAGES: {
+    case UPDATE_USERS: {
       return {
         ...state,
-        receivedMess: []
+        usersOnline: action.usersOnline
+      }
+    }
+    case PURGE_HISTORY: {
+      return {
+        ...state,
+        messageHistory: [],
+        usersOnline: []
       }
     }
     default:
@@ -44,22 +53,29 @@ export function addMessage(message) {
   }
 }
 
-export function updateCurrencyRoom(roomName) {
+export function updateCurrentRoom(roomName) {
   return {
     type: UPDATE_CURRENT_ROOM,
     roomName
   }
 }
 
-export function receivedNewMessage(message) {
+export function receiveNewMessage(message) {
   return {
-    type: RECEIVED_NEW_MESSAGE,
+    type: RECEIVE_NEW_MESSAGE,
     message
   }
 }
 
-export function deleteReceivedMessages() {
+export function updateUsersOnline(usersOnline) {
   return {
-    type: DELETE_RECEIVED_MESSAGES
+    type: UPDATE_USERS,
+    usersOnline
+  }
+}
+
+export function purgeHistory() {
+  return {
+    type: PURGE_HISTORY
   }
 }

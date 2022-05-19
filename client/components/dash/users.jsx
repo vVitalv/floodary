@@ -1,7 +1,16 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const UserList = () => {
-  return <div className="flex flex-col basis-1/5 p-4">users online</div>
+  const { usersOnline } = useSelector((store) => store.messages)
+  return (
+    <div className="flex flex-col basis-1/5 px-4 gap-2">
+      <h2>o n l i n e</h2>
+      {usersOnline.map((user, ind) => {
+        return <div className="text-green-500" key={ind}>{user}</div>
+      })}
+    </div>
+  )
 }
 
 UserList.propTypes = {}
