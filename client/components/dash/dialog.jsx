@@ -5,7 +5,7 @@ const Dialog = () => {
   const { receivedMess } = useSelector((store) => store.messages)
   const { login } = useSelector((store) => store.auth.user)
   const dates = Array.from(new Set(receivedMess.map((m) => new Date(m[2]).toDateString())))
-  
+
   useEffect(() => {
     const chatWindow = document.querySelector('#dialog-window')
     chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' })

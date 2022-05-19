@@ -1,7 +1,6 @@
 import Cookies from 'universal-cookie'
 import { history } from '..'
 import { socketLogin, socketLogout } from '../sockets/socketReceivers'
-import { deleteReceivedMessages } from './messages'
 
 const UPDATE_LOGIN = 'UPDATE_LOGIN'
 const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
@@ -148,7 +147,6 @@ export function signInAs() {
 }
 
 export function logOut() {
-  deleteReceivedMessages()
   socketLogout()
   return { type: LOGOUT }
 }

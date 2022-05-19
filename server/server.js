@@ -198,7 +198,6 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', (reason) => {
     console.log(`Socket ${socket.id} disconnected because: ${reason}`)
-    console.log(userNames)
     delete userNames[socket.id]
   })
 })

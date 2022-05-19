@@ -4,7 +4,6 @@ import Head from '../head'
 import LoginForm from './login'
 
 const Home = () => {
-
   return (
     <div>
       <Head title="Wellcome" />
