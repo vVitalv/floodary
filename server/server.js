@@ -173,7 +173,7 @@ io.on('connection', (socket) => {
       userNames[socket.id] = [login, role]
       socket.join(currentRoom)
     } catch {
-      console.log('tried to login without token')
+      console.log('Tried to login without token')
     }
   })
 

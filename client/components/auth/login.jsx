@@ -29,9 +29,10 @@ const LoginForm = () => {
   }
 
   return (
-    <main className="flex flex-col w-full h-screen justify-center items-center bg-slate-400">
+    <main className="relative flex flex-col w-screen h-screen justify-center items-center font-mono font-semibold bg-slate-400">
+      <p className="absolute bottom-2 right-2 text-amber-300">f l o o d a r y</p>
       <div className="w-min bg-slate-500 p-4 rounded-md shadow-lg shadow-amber-300">
-        <form className="w-min font-mono font-semibold text-gray-800">
+        <form className="w-min text-gray-800">
           <div className="flex flex-col w-60">
             <div className="flex flex-col gap-y-1">
               <label className="self-end" htmlFor="nickname">
