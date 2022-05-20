@@ -5,9 +5,13 @@ const UserList = () => {
   const { usersOnline } = useSelector((store) => store.messages)
   return (
     <div className="flex flex-col basis-1/5 px-4 gap-2">
-      <h2>o n l i n e</h2>
+      <h2>online</h2>
       {usersOnline.map((user, ind) => {
-        return <div className="text-green-500" key={ind}>{user}</div>
+        return (
+          <div className="text-green-500" key={ind}>
+            {user}
+          </div>
+        )
       })}
     </div>
   )

@@ -1,11 +1,12 @@
 {
   "name": "Floodary",
   "short_name": "FLD",
+  "description": "Chat for chat",
   "icons": ["/images/icon.svg"],
-  "theme_color": "#fcd34d",
+  "theme_color": "#334155",
   "background_color": "#64748b",
   "display": "browser",
+  "lang": "en-US",
   "scope": "/",
-  "start_url": "/",
-  "splash_pages": null
+  "start_url": "/"
 }

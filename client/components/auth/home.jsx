@@ -1,14 +1,15 @@
 import React from 'react'
+import Div100vh from 'react-div-100vh'
 
 import Head from '../head'
 import LoginForm from './login'
 
 const Home = () => {
   return (
-    <div>
+    <Div100vh>
       <Head title="Wellcome" />
       <LoginForm />
-    </div>
+    </Div100vh>
   )
 }
 

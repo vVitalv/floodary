@@ -18,8 +18,8 @@ const LoginForm = () => {
   const dispatch = useDispatch()
   const { login, password, user, token, authErrMessage } = useSelector((store) => store.auth)
   const { errorMessage } = authErrMessage
-  const svgColor = (errQualifier, label, minLength) => {
-    if (errorMessage.includes(errQualifier)) {
+  const svgColor = (errType, label, minLength) => {
+    if (errorMessage.includes(errType)) {
       return '#f87171'
     }
     if (label.length >= minLength) {
@@ -29,7 +29,7 @@ const LoginForm = () => {
   }
 
   return (
-    <main className="relative flex flex-col w-screen h-screen justify-center items-center font-mono font-semibold bg-slate-400">
+    <main className="relative flex flex-col h-full w-full justify-center items-center font-mono font-semibold bg-slate-400">
       <p className="absolute bottom-2 right-2 text-amber-300">f l o o d a r y</p>
       <div className="w-min bg-slate-500 p-4 rounded-md shadow-lg shadow-amber-300">
         <form className="w-min text-gray-800">

@@ -9,7 +9,7 @@ import Footer from './footer'
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col h-screen w-screen font-mono font-semibold text-amber-500 overflow-hidden">
+    <div className="flex flex-col h-full w-full font-mono font-semibold text-amber-500 overflow-hidden">
       <Head title="RoomName" />
       <Header />
       <main className="flex flex-col grow bg-gray-500 text-gray-600">
