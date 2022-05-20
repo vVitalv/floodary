@@ -55,7 +55,7 @@ const LoginForm = () => {
                   />
                 </svg>
                 <input
-                  className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
+                  className="bg-slate-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
                   id="nickname"
                   value={login}
                   onChange={(e) => {
@@ -99,7 +99,7 @@ const LoginForm = () => {
                   />
                 </svg>
                 <input
-                  className="bg-amber-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
+                  className="bg-slate-100 text-gray-600 font-semibold px-2 rounded-sm outline-none"
                   id="password"
                   value={password}
                   onChange={(e) => {

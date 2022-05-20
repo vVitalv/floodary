@@ -1,4 +1,6 @@
 import React from 'react'
+import Div100vh from 'react-div-100vh'
+import { useSelector } from 'react-redux'
 
 import Head from '../head'
 import Header from './header'
@@ -8,17 +10,20 @@ import TypeMessage from './typemessage'
 import Footer from './footer'
 
 const Dashboard = () => {
+  const { currentRoom } = useSelector((store) => store.messages)
   return (
-    <div className="flex flex-col h-full w-full font-mono font-semibold text-amber-500 overflow-hidden">
-      <Head title="RoomName" />
-      <Header />
-      <main className="flex flex-col grow bg-gray-500 text-gray-600">
-        <Rooms />
-        <Chat />
-        <TypeMessage />
-      </main>
-      <Footer />
-    </div>
+    <Div100vh>
+      <Head title={currentRoom} />
+      <div className="flex flex-col h-full w-full font-mono overflow-hidden">
+        <Header />
+        <main className="flex flex-col grow">
+          <Rooms />
+          <Chat />
+          <TypeMessage />
+        </main>
+        <Footer />
+      </div>
+    </Div100vh>
   )
 }
 

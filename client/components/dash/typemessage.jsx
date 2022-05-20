@@ -8,9 +8,9 @@ const TypeMessage = () => {
   const dispatch = useDispatch()
   const { messages, currentRoom } = useSelector((store) => store.messages)
   return (
-    <div className="flex h-10 p-2 gap-2 px-4">
+    <div className="flex h-10 p-2 gap-2 px-4 bg-gray-500 text-gray-600">
       <textarea
-        className="bg-amber-100 text-gray-600 grow px-2 rounded-md outline-none resize-none"
+        className="bg-gray-200 text-gray-600 grow px-2 rounded-md outline-none resize-none"
         id="message"
         value={messages}
         onChange={(e) => dispatch(addMessage(e.target.value))}

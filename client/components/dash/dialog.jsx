@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { useSelector } from 'react-redux'
 
 const Dialog = () => {
@@ -13,14 +14,14 @@ const Dialog = () => {
   }, [messageHistory])
 
   return (
-    <div className="relative grow text-gray-600 bg-purple-400 break-all ">
+    <div className="relative grow text-gray-600 bg-indigo-300 break-all ">
       <div
         id="dialog-window"
         className="absolute flex flex-col gap-2 w-full h-full p-2 overflow-auto overscroll-auto"
       >
-        {dates.map((msgsDate, ind) => {
+        {dates.map((msgsDate) => {
           return (
-            <div className="flex flex-col gap-2" key={ind}>
+            <div className="flex flex-col gap-2" key={uuidv4()}>
               <div className="sticky top-0 w-fit self-center bg-gray-300 rounded-full text-center px-4 backdrop-blur-md">
                 {msgsDate}
               </div>
@@ -33,11 +34,11 @@ const Dialog = () => {
                 const msgMStyle =
                   userName === login
                     ? 'flex flex-col bg-lime-300 w-fit items-end ml-4 px-2 rounded-t-xl rounded-bl-xl self-end'
-                    : 'flex flex-col bg-amber-300 w-fit items-start mr-4 px-2 rounded-t-xl rounded-br-xl'
+                    : 'flex flex-col bg-amber-200 w-fit items-start mr-4 px-2 rounded-t-xl rounded-br-xl'
                 if (date === msgsDate) {
                   return (
                     <div className={msgMStyle} key={msDate}>
-                      <p className="text-purple-400 text-xs px-2">
+                      <p className="text-indigo-400 text-xs px-2">
                         {`${userName} - `}
                         <span className="font-thin">{time}</span>
                       </p>

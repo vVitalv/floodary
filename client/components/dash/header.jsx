@@ -12,7 +12,7 @@ const Header = () => {
     dispatch(logOut())
   }
   return (
-    <header className="flex justify-between items-center h-10 px-4 w-full bg-slate-700">
+    <header className="flex justify-between items-center h-10 px-4 w-full font-semibold text-amber-500 bg-slate-700">
       f l o o d a r y
       <p>
         {login}
