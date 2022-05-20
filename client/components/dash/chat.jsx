@@ -5,9 +5,9 @@ import UserList from './users'
 
 const Chat = () => {
   return (
-    <div className="flex grow basis-4/5">
-      <Dialog />
+    <div className="relative flex grow">
       <UserList />
+      <Dialog />
     </div>
   )
 }

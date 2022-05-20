@@ -4,16 +4,33 @@ import { useSelector } from 'react-redux'
 
 const UserList = () => {
   const { usersOnline } = useSelector((store) => store.messages)
+  const toggle = () => {
+    const sidebar = document.querySelector('#users-online')
+    sidebar.classList.toggle('translate-x-44')
+  }
   return (
-    <div className="flex flex-col basis-1/5 px-4 gap-2 bg-gray-400 text-gray-600">
-      <h2>online</h2>
-      {usersOnline.map((user) => {
-        return (
-          <div className="text-green-500" key={uuidv4()}>
-            {user}
-          </div>
-        )
-      })}
+    <div
+      id="users-online"
+      className="absolute flex h-full -ml-44 z-10 font-semibold text-gray-600 transition delay-150"
+    >
+      <div className="p-4 w-44 h-full bg-gray-400 bg-opacity-80">
+        <h2>online</h2>
+        {usersOnline.map((user) => {
+          return (
+            <div className="text-amber-400 mt-2" key={uuidv4()}>
+              {user}
+            </div>
+          )
+        })}
+      </div>
+      <div className="bg-gray-400 w-1 bg-opacity-80" />
+      <button
+        className="self-center w-3 h-8 rounded-r-md bg-gray-400 bg-opacity-70"
+        type="button"
+        onClick={toggle}
+      >
+        |
+      </button>
     </div>
   )
 }

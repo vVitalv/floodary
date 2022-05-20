@@ -14,7 +14,7 @@ const Dialog = () => {
   }, [messageHistory])
 
   return (
-    <div className="relative grow text-gray-600 bg-indigo-300 break-all ">
+    <div className="relative grow text-gray-600 bg-indigo-300 break-all">
       <div
         id="dialog-window"
         className="absolute flex flex-col gap-2 w-full h-full p-2 overflow-auto overscroll-auto"
@@ -22,7 +22,7 @@ const Dialog = () => {
         {dates.map((msgsDate) => {
           return (
             <div className="flex flex-col gap-2" key={uuidv4()}>
-              <div className="sticky top-0 w-fit self-center bg-gray-300 rounded-full text-center px-4 backdrop-blur-md">
+              <div className="sticky top-0 w-fit self-center bg-gray-300 rounded-full text-center px-4">
                 {msgsDate}
               </div>
               {messageHistory.map((msg) => {
