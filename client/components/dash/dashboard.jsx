@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <Div100vh>
       <Head title={currentRoom} />
-      <div className="flex flex-col h-full w-full font-mono overflow-hidden">
+      <div className="flex flex-col h-full w-screen font-mono overflow-hidden">
         <Header />
         <main className="flex flex-col grow">
           <Rooms />

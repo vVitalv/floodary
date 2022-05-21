@@ -1,15 +1,16 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { addMessage } from '../../redux/reducers/messages'
+import { inputMessage } from '../../redux/reducers/messages'
 import { sendMessage } from '../../redux/sockets/socketReceivers'
 
 const TypeMessage = () => {
   const dispatch = useDispatch()
   const { messages, currentRoom } = useSelector((store) => store.messages)
-  const flood = () => {
+
+  function flood() {
     sendMessage(messages, currentRoom)
-    dispatch(addMessage(''))
+    dispatch(inputMessage(''))
   }
 
   return (
@@ -18,9 +19,7 @@ const TypeMessage = () => {
         className="bg-gray-200 text-gray-600 grow px-2 rounded-md outline-none"
         id="message"
         value={messages}
-        onChange={(e) => {
-          dispatch(addMessage(e.target.value))
-        }}
+        onChange={(e) => dispatch(inputMessage(e.target.value))}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && messages.length) flood()
         }}
@@ -28,7 +27,7 @@ const TypeMessage = () => {
         autoComplete="off"
       />
       <button
-        className="bg-slate-400 text-gray-800 font-semibold text-xs rounded-md px-2 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+        className="bg-amber-400 text-gray-600 font-semibold text-xs rounded-md px-2 transition-colors duration-200 hover:text-gray-800 hover:bg-amber-300"
         type="button"
         onClick={flood}
       >

@@ -17,9 +17,10 @@ import { receiveNewMessage, updateUsersOnline } from '../reducers/messages'
 
 export const socket = io({ transports: ['websocket'] })
 
-socket.on('connect', () => {
+socket.on('connect', async () => {
   console.log('Socket client connected')
-  socket.emit('load history', 'Lobbio')
+  const { currentRoom } = await store.getState().messages
+  socket.emit('load history', currentRoom)
 })
 
 socket.on('history messages', (msgs) => {
