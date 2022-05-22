@@ -17,7 +17,7 @@ const Dialog = () => {
     <div className="relative grow text-gray-600 bg-indigo-300 break-all">
       <div
         id="dialog-window"
-        className="absolute flex flex-col gap-2 w-full h-full p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-slate-700 scrollbar-track-gray-500"
+        className="absolute flex flex-col gap-2 w-full h-full p-2 overflow-y-auto"
       >
         {dates.map((msgsDate) => {
           return (

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 import Head from '../head'
 import Header from './header'
-import Rooms from './rooms'
+import RoomHeader from './roomheader'
 import Chat from './chat'
 import TypeMessage from './typemessage'
 import Footer from './footer'
@@ -17,7 +17,7 @@ const Dashboard = () => {
       <div className="flex flex-col h-full w-screen font-mono overflow-hidden">
         <Header />
         <main className="flex flex-col grow">
-          <Rooms />
+          <RoomHeader />
           <Chat />
           <TypeMessage />
         </main>

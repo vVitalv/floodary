@@ -5,31 +5,31 @@ import { useSelector } from 'react-redux'
 const UserList = () => {
   const { usersOnline } = useSelector((store) => store.messages)
   function toggle() {
-    const sidebar = document.querySelector('#users-online')
-    sidebar.classList.toggle('translate-x-44')
+    const usersSidebar = document.querySelector('#users-sidebar')
+    usersSidebar.classList.toggle('translate-x-44')
+    setTimeout(() => usersSidebar.classList.toggle('z-20'), 200)
   }
   return (
     <div
-      id="users-online"
-      className="absolute flex h-full -ml-44 z-20 font-semibold text-gray-600 transition delay-150"
+      id="users-sidebar"
+      className="absolute flex h-full w-44 -ml-44 z-10 font-semibold text-gray-600 transition delay-150"
     >
-      <div className="p-4 w-44 h-full bg-gray-400 bg-opacity-80">
+      <div className="w-full h-full px-2 bg-gray-400 bg-opacity-90">
         <h2>online</h2>
         {usersOnline.map((user) => {
           return (
-            <div className="text-amber-400 mt-2" key={uuidv4()}>
+            <div className="text-amber-300" key={uuidv4()}>
               {user}
             </div>
           )
         })}
       </div>
-      <div className="bg-gray-400 w-1 bg-opacity-80" />
       <button
-        className="self-center w-3 h-12 rounded-r-md bg-pink-300 opacity-70"
+        className="w-fit h-fit py-1 -mr-4 mt-14 text-xs rounded-r-md bg-pink-300 opacity-70"
         type="button"
         onClick={toggle}
       >
-        |
+        <p className="[writing-mode:vertical-lr]">users</p>
       </button>
     </div>
   )

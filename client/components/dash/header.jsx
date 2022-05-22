@@ -17,7 +17,7 @@ const Header = () => {
       <p>
         {login}
         <button
-          className="ml-2 text-xs text-gray-400 transition-colors duration-200 hover:text-amber-300 "
+          className="ml-2 text-xs text-gray-400 transition-colors duration-200 hover:text-amber-300"
           type="button"
           onClick={logOutAndPurge}
         >
