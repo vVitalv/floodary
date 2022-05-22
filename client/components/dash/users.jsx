@@ -6,8 +6,11 @@ const UserList = () => {
   const { usersOnline } = useSelector((store) => store.messages)
   function toggle() {
     const usersSidebar = document.querySelector('#users-sidebar')
+    const roomsSidebar = document.querySelector('#rooms-sidebar')
+    setTimeout(() => {
+      roomsSidebar.classList.toggle('z-10')
+    }, 150)
     usersSidebar.classList.toggle('translate-x-44')
-    setTimeout(() => usersSidebar.classList.toggle('z-20'), 200)
   }
   return (
     <div

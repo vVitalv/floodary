@@ -2,15 +2,18 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { inputRoomName, createRoom } from '../../redux/reducers/messages'
+import { inputRoomName, createRoom, updateCurrentRoom } from '../../redux/reducers/messages'
 
 const Rooms = () => {
   const dispatch = useDispatch()
   const { currentRoom, rooms, newRoomName } = useSelector((store) => store.messages)
   function toggle() {
     const roomsSidebar = document.querySelector('#rooms-sidebar')
+    const usersSidebar = document.querySelector('#users-sidebar')
+    setTimeout(() => {
+      usersSidebar.classList.toggle('z-10')
+    }, 150)
     roomsSidebar.classList.toggle('translate-x-44')
-    setTimeout(() => roomsSidebar.classList.toggle('z-20'), 200)
   }
   function testAndCreateRoom() {
     if (newRoomName.length && !rooms.includes(newRoomName)) {
@@ -45,11 +48,22 @@ const Rooms = () => {
           </button>
         </div>
         {rooms.map((room) => {
-          const roomStyle = room === currentRoom ? 'text-amber-300' : 'text-gray-200'
+          if (room === currentRoom) {
+            return (
+              <p className="text-amber-300" key={uuidv4()}>
+                {room}
+              </p>
+            )
+          }
           return (
-            <div className={roomStyle} key={uuidv4()}>
+            <button
+              type="button"
+              className="text-gray-200 w-fit"
+              key={uuidv4()}
+              onClick={() => dispatch(updateCurrentRoom(room))}
+            >
               {room}
-            </div>
+            </button>
           )
         })}
       </div>
