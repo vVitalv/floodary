@@ -173,7 +173,7 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('new login', ({ login, role, currentRoom }) => {
+  socket.on('new login', (login, role, currentRoom) => {
     try {
       userNames[socket.id] = [login, role]
       socket.join(currentRoom)
@@ -183,7 +183,7 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('send mess', async ({ messages, currentRoom, date }) => {
+  socket.on('send mess', async (messages, currentRoom, date) => {
     try {
       const newMessage = new Message({
         userName: userNames[socket.id][0],
@@ -198,6 +198,13 @@ io.on('connection', (socket) => {
     } catch (err) {
       console.log(`Send message error: ${err}`)
     }
+  })
+
+  socket.on('change room', (currentRoom, newRoom) => {
+    socket.leave(currentRoom)
+    socket.join(newRoom)
+    io.in(Array.from(socket.rooms)).emit('users online', onlineList())
+    socket.emit('new current room', newRoom)
   })
 
   socket.on('disconnect', (reason) => {

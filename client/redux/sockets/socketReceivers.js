@@ -13,7 +13,13 @@ export const socket = io('http://localhost:8090', {
 })
 */
 import store from '../index'
-import { createRoom, receiveNewMessage, updateUsersOnline } from '../reducers/messages'
+import {
+  createRoom,
+  receiveHistory,
+  receiveNewMessage,
+  updateCurrentRoom,
+  updateUsersOnline
+} from '../reducers/messages'
 
 export const socket = io({ transports: ['websocket'] })
 
@@ -25,7 +31,7 @@ socket.on('connect', async () => {
 })
 
 socket.on('history messages', (msgs) => {
-  store.dispatch(receiveNewMessage(msgs))
+  store.dispatch(receiveHistory(msgs))
 })
 
 socket.on('rooms list', (rooms) => {
@@ -33,7 +39,7 @@ socket.on('rooms list', (rooms) => {
 })
 
 export function socketLogin(login, role, currentRoom) {
-  socket.emit('new login', { login, role, currentRoom })
+  socket.emit('new login', login, role, currentRoom)
 }
 
 socket.on('users online', (onlineList) => {
@@ -41,11 +47,20 @@ socket.on('users online', (onlineList) => {
 })
 
 export function sendMessage(messages, currentRoom) {
-  socket.emit('send mess', { messages, currentRoom, date: Date.now() })
+  socket.emit('send mess', messages, currentRoom, Date.now())
 }
 
 socket.on('new message', (msg) => {
   store.dispatch(receiveNewMessage(msg))
+})
+
+export function changeRoom(currentRoom, newRoom) {
+  socket.emit('change room', currentRoom, newRoom)
+}
+
+socket.on('new current room', (newRoom) => {
+  store.dispatch(updateCurrentRoom(newRoom))
+  socket.emit('load history', newRoom)
 })
 
 export function socketLogout() {

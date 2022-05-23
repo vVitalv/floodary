@@ -2,7 +2,8 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { inputRoomName, createRoom, updateCurrentRoom } from '../../redux/reducers/messages'
+import { inputRoomName, createRoom } from '../../redux/reducers/messages'
+import { changeRoom } from '../../redux/sockets/socketReceivers'
 
 const Rooms = () => {
   const dispatch = useDispatch()
@@ -63,7 +64,7 @@ const Rooms = () => {
               type="button"
               className="text-gray-200 max-w-fit overflow-x-hidden text-ellipsis"
               key={uuidv4()}
-              onClick={() => dispatch(updateCurrentRoom(room))}
+              onClick={() => changeRoom(currentRoom, room)}
             >
               {room}
             </button>
@@ -71,7 +72,7 @@ const Rooms = () => {
         })}
       </div>
       <button
-        className="w-fit h-fit py-1 -mr-4 mt-2 text-xs rounded-r-md bg-pink-300 opacity-70"
+        className="w-fit h-fit py-1 -mr-6 mt-2 rounded-r-md bg-purple-300 opacity-70"
         type="button"
         onClick={toggle}
       >
