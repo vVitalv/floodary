@@ -25,7 +25,7 @@ const Rooms = () => {
       id="rooms-sidebar"
       className="absolute flex h-full w-44 -ml-44 z-10 font-semibold text-gray-600 transition delay-150"
     >
-      <div className="flex flex-col w-full h-full px-2 bg-gray-400 bg-opacity-90">
+      <div className="flex flex-col w-full h-full px-2 bg-gray-400 bg-opacity-90 overflow-y-auto">
         <h2>rooms</h2>
         <div className="flex h-10 py-2">
           <input
@@ -50,7 +50,10 @@ const Rooms = () => {
         {rooms.map((room) => {
           if (room === currentRoom) {
             return (
-              <p className="text-amber-300" key={uuidv4()}>
+              <p
+                className="text-amber-300 max-w-fit overflow-x-hidden text-ellipsis"
+                key={uuidv4()}
+              >
                 {room}
               </p>
             )
@@ -58,7 +61,7 @@ const Rooms = () => {
           return (
             <button
               type="button"
-              className="text-gray-200 w-fit"
+              className="text-gray-200 max-w-fit overflow-x-hidden text-ellipsis"
               key={uuidv4()}
               onClick={() => dispatch(updateCurrentRoom(room))}
             >

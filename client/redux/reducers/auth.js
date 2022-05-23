@@ -80,7 +80,7 @@ export function signIn() {
           }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
-          socketLogin(data.token, currentRoom)
+          socketLogin(data.user.login, data.user.role, currentRoom)
           history.replace('/dashboard')
         }
       })
@@ -118,7 +118,7 @@ export function signUp() {
           }, 5000)
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
-          socketLogin(data.token, currentRoom)
+          socketLogin(data.user.login, data.user.role, currentRoom)
           history.replace('/dashboard')
         }
       })
@@ -139,7 +139,7 @@ export function signInAs() {
           })
         } else {
           dispatch({ type: LOGIN, token: data.token, user: data.user })
-          socketLogin(data.token, currentRoom)
+          socketLogin(data.user.login, data.user.role, currentRoom)
           history.replace('/dashboard')
         }
       })

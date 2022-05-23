@@ -3,15 +3,16 @@ const INPUT_ROOM = 'INPUT_ROOM'
 const UPDATE_CURRENT_ROOM = 'UPDATE_CURRENT_ROOM'
 const UPDATE_USERS = 'UPDATE_USERS'
 const RECEIVE_NEW_MESSAGE = 'RECEIVE_NEW_MESSAGE'
+// const RECEIVE_ROOMS = 'RECEIVE_ROOMS'
 const CREATE_ROOM = 'CREATE_ROOM'
 const PURGE_HISTORY = 'PURGE_HISTORY'
-const lobby = "Lobbio"
+const lobby = 'Lobbio'
 
 const initialState = {
   messages: '',
   currentRoom: lobby,
   newRoomName: '',
-  rooms: [lobby],
+  rooms: [],
   messageHistory: [],
   usersOnline: []
 }
@@ -43,7 +44,7 @@ export default function messages(state = initialState, action) {
       return { ...state, newRoomName: action.newRoomName }
     }
     case CREATE_ROOM: {
-      return { ...state, rooms: [...state.rooms, action.newRoomName], newRoomName: '' }
+      return { ...state, rooms: [...state.rooms, ...action.newRoomName], newRoomName: '' }
     }
     case PURGE_HISTORY: {
       return {

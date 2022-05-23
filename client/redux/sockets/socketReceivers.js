@@ -13,7 +13,7 @@ export const socket = io('http://localhost:8090', {
 })
 */
 import store from '../index'
-import { receiveNewMessage, updateUsersOnline } from '../reducers/messages'
+import { createRoom, receiveNewMessage, updateUsersOnline } from '../reducers/messages'
 
 export const socket = io({ transports: ['websocket'] })
 
@@ -21,14 +21,19 @@ socket.on('connect', async () => {
   console.log('Socket client connected')
   const { currentRoom } = await store.getState().messages
   socket.emit('load history', currentRoom)
+  socket.emit('load rooms')
 })
 
 socket.on('history messages', (msgs) => {
   store.dispatch(receiveNewMessage(msgs))
 })
 
-export function socketLogin(token, currentRoom) {
-  socket.emit('new login', { token, currentRoom })
+socket.on('rooms list', (rooms) => {
+  store.dispatch(createRoom(rooms))
+})
+
+export function socketLogin(login, role, currentRoom) {
+  socket.emit('new login', { login, role, currentRoom })
 }
 
 socket.on('users online', (onlineList) => {

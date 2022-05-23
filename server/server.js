@@ -164,16 +164,22 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('new login', async ({ token, currentRoom }) => {
+  socket.on('load rooms', async () => {
     try {
-      const user = jwt.verify(token, config.secret)
-      const { login, role } = await User.findById(user.uid)
+      const rooms = await Message.distinct('room')
+      socket.emit('rooms list', rooms)
+    } catch {
+      console.log('Rooms load error')
+    }
+  })
+
+  socket.on('new login', ({ login, role, currentRoom }) => {
+    try {
       userNames[socket.id] = [login, role]
       socket.join(currentRoom)
-      console.log(Array.from(socket.rooms), onlineList())
       io.in(Array.from(socket.rooms)).emit('users online', onlineList())
     } catch {
-      console.log('Tried to login without token')
+      console.log('Joining room error')
     }
   })
 

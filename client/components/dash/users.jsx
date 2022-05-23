@@ -17,7 +17,7 @@ const UserList = () => {
       id="users-sidebar"
       className="absolute flex h-full w-44 -ml-44 z-10 font-semibold text-gray-600 transition delay-150"
     >
-      <div className="w-full h-full px-2 bg-gray-400 bg-opacity-90">
+      <div className="w-full h-full px-2 bg-gray-400 bg-opacity-90 overflow-y-auto">
         <h2>online</h2>
         {usersOnline.map((user) => {
           return (
