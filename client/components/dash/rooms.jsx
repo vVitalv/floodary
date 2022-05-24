@@ -11,9 +11,7 @@ const Rooms = () => {
   function toggle() {
     const roomsSidebar = document.querySelector('#rooms-sidebar')
     const usersSidebar = document.querySelector('#users-sidebar')
-    setTimeout(() => {
-      usersSidebar.classList.toggle('z-10')
-    }, 150)
+    usersSidebar.classList.toggle('z-10')
     roomsSidebar.classList.toggle('translate-x-44')
   }
   function testAndCreateRoom() {
@@ -24,7 +22,7 @@ const Rooms = () => {
   return (
     <div
       id="rooms-sidebar"
-      className="absolute flex h-full w-44 -ml-44 z-10 font-semibold text-gray-600 transition delay-150"
+      className="absolute flex h-full w-44 -ml-44 z-10 font-semibold text-gray-600 transition duration-150"
     >
       <div className="flex flex-col w-full h-full px-2 bg-gray-400 bg-opacity-90 overflow-y-auto">
         <h2>rooms</h2>
