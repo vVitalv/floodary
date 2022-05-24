@@ -16,13 +16,7 @@ import User from './model/user.model'
 import Message from './model/message.model'
 import Html from '../client/html'
 
-let Root
-try {
-  // eslint-disable-next-line import/no-unresolved
-  Root = require('../dist/assets/js/ssr/root.bundle')
-} catch {
-  console.log('SSR not found. Please run "yarn run build:ssr"')
-}
+const Root = () => ''
 
 const userNames = {}
 const onlineList = () => {
