@@ -26,7 +26,7 @@ const UserList = () => {
         })}
       </div>
       <button
-        className="w-fit h-fit py-1 -mr-6 mt-16 rounded-r-md bg-purple-300 opacity-70"
+        className="w-fit h-fit py-1 -mr-6 mt-20 rounded-r-md bg-purple-300 opacity-70"
         type="button"
         onClick={toggle}
       >

@@ -1,14 +1,9 @@
 const { resolve } = require('path')
 require('dotenv').config()
-const fs = require('fs')
-
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const StringReplacePlugin = require('string-replace-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const ESLintPlugin = require('eslint-webpack-plugin')
-const TerserJSPlugin = require('terser-webpack-plugin')
 
 const date = +new Date()
 const APP_VERSION = Buffer.from((date - (date % (1000 * 60 * 30))).toString())
@@ -18,14 +13,26 @@ const APP_VERSION = Buffer.from((date - (date % (1000 * 60 * 30))).toString())
 const config = {
   optimization: {
     minimize: true,
-    minimizer: [new TerserJSPlugin({ parallel: true })]
+    minimizer: [
+      '...',
+      new CssMinimizerPlugin({
+        exclude: /node_modules/,
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true }
+            }
+          ]
+        }
+      })
+    ]
   },
   entry: {
     main: './main.jsx'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-
     alias: {
       d3: 'd3/index.js'
     }
@@ -68,7 +75,7 @@ const config = {
       },
       {
         test: /\.txt$/i,
-        use: 'raw-loader'
+        type: 'asset/source'
       },
       {
         test: /\.scss$/,
@@ -90,80 +97,25 @@ const config = {
           }
         ]
       },
-
       {
         test: /\.(png|jpg|gif|webp)$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
-      },
-      {
-        test: /\.eot$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
-      },
-      {
-        test: /\.woff(2)$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
-      },
-      {
-        test: /\.[ot]tf$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
+        type: 'asset/resource'
       },
       {
         test: /\.svg$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/'
-            }
-          },
-          {
-            loader: 'svg-url-loader',
-            options: {
-              limit: 10 * 1024,
-              noquotes: true
-            }
-          }
-        ]
+        type: 'asset/inline'
       }
     ]
   },
   plugins: [
-    new ESLintPlugin({
-      extensions: ['js', 'jsx'],
-      exclude: 'node_modules'
-    }),
-    new StringReplacePlugin(),
     new CopyWebpackPlugin(
       {
         patterns: [
           { from: 'assets/images', to: 'images' },
+          { from: 'assets/sitemap.xml', to: 'sitemap.xml' },
           { from: 'assets/manifest.json', to: 'manifest.json' },
+          { from: 'assets/robots.txt', to: 'robots.txt' },
           { from: 'index.html', to: 'index.html' },
-          {
-            from: 'install-sw.js',
-            to: 'js/install-sw.js',
-            transform: (content) => {
-              return content.toString().replace(/APP_VERSION/g, APP_VERSION)
-            }
-          },
-          { from: 'vendors', to: 'vendors' },
           {
             from: 'html.js',
             to: 'html.js',
@@ -171,18 +123,10 @@ const config = {
               return content.toString().replace(/COMMITHASH/g, APP_VERSION)
             }
           },
-          {
-            from: 'sw.js',
-            to: 'sw.js',
-            transform: (content) => {
-              return content.toString().replace(/APP_VERSION/g, APP_VERSION)
-            }
-          }
         ]
       },
       { parallel: 100 }
     ), // `...`,
-    new CssMinimizerPlugin({ parallel: 4 }),
 
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',

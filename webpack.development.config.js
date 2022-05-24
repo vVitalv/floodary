@@ -1,12 +1,10 @@
 const { resolve } = require('path')
-require('dotenv').config()
-const fs = require('fs')
-
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
+require('dotenv').config()
 
 const CLIENT_PORT = 8087
 const APP_VERSION = 'development'
@@ -65,11 +63,11 @@ const config = {
     rules: [
       {
         test: /\.js|jsx$/,
-        use: [
-          {
-            loader: require.resolve('babel-loader')
-          }
-        ],
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react'],
+          cacheDirectory: true
+        },
         exclude: /node_modules/
       },
       {
@@ -89,7 +87,7 @@ const config = {
       },
       {
         test: /\.txt$/i,
-        use: 'raw-loader'
+        type: 'asset/source'
       },
       {
         test: /\.scss$/,
@@ -111,57 +109,13 @@ const config = {
           }
         ]
       },
-
       {
         test: /\.(png|jpg|gif|webp)$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
-      },
-      {
-        test: /\.eot$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
-      },
-      {
-        test: /\.woff(2)$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
-      },
-      {
-        test: /\.[ot]tf$/,
-        use: [
-          {
-            loader: 'file-loader'
-          }
-        ]
+        type: 'asset/resource'
       },
       {
         test: /\.svg$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/'
-            }
-          },
-          {
-            loader: 'svg-url-loader',
-            options: {
-              limit: 10 * 1024,
-              noquotes: true
-            }
-          }
-        ]
+        type: 'asset/inline'
       }
     ]
   },
@@ -180,35 +134,21 @@ const config = {
       {
         patterns: [
           { from: 'assets/images', to: 'images' },
+          { from: 'assets/robots.txt', to: 'robots.txt' },
+          { from: 'assets/sitemap.xml', to: 'sitemap.xml' },
           { from: 'assets/manifest.json', to: 'manifest.json' },
           { from: 'index.html', to: 'index.html' },
-          {
-            from: 'install-sw.js',
-            to: 'js/install-sw.js',
-            transform: (content) => {
-              return content.toString().replace(/APP_VERSION/g, APP_VERSION)
-            }
-          },
-          { from: 'vendors', to: 'vendors' },
           {
             from: 'html.js',
             to: 'html.js',
             transform: (content) => {
               return content.toString().replace(/COMMITHASH/g, APP_VERSION)
             }
-          },
-          {
-            from: 'sw.js',
-            to: 'sw.js',
-            transform: (content) => {
-              return content.toString().replace(/APP_VERSION/g, APP_VERSION)
-            }
           }
         ]
       },
       { parallel: 100 }
     ),
-
     new ReactRefreshWebpackPlugin({
       overlay: {
         sockIntegration: 'wds'

@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-// import cors from 'cors'
+import compression from 'compression'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { renderToStaticNodeStream } from 'react-dom/server'
@@ -24,7 +24,6 @@ try {
   console.log('SSR not found. Please run "yarn run build:ssr"')
 }
 
-// const connections = []
 const userNames = {}
 const onlineList = () => {
   return Object.keys(userNames).map((id) => {
@@ -40,6 +39,7 @@ const httpServer = createServer(app)
 const io = new Server(httpServer)
 
 const middleware = [
+  compression(),
   express.static(path.resolve(__dirname, '../dist/assets')),
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
   express.json({ limit: '50mb', extended: true }),
@@ -213,64 +213,6 @@ io.on('connection', (socket) => {
     io.in(Array.from(socket.rooms)).emit('users online', onlineList())
   })
 })
-
-/*
-io.on('connection', (socket) => {
-  connections.push(socket)
-
-  socket.on('new login', async ({ token, currentRoom }) => {
-    try {
-      const user = jwt.verify(token, config.secret)
-      const { login, role } = await User.findById(user.uid)
-      userNames[socket.id] = [login, role]
-      if (role.indexOf('admin') !== -1) {
-        socket.emit('all users', userNames)
-      }
-      socket.join(currentRoom)
-    } catch {
-      console.log('tried to login without token')
-    }
-  })
-
-  socket.on('load history', async (roomName) => {
-    const messages = getFormatMessages(await Message.find({ room: roomName }))
-    io.to(socket.id).emit('history messages', messages)
-  })
-
-  socket.on('send mess', async ({ messages, currentRoom }) => {
-    try {
-      const newMessage = new Message({
-        userName: userNames[socket.id][0],
-        message: messages,
-        room: currentRoom
-      })
-      await newMessage.save()
-    } catch (err) {
-      console.log(`err${err}`)
-    }
-    io.to(currentRoom).emit('new message', { [userNames[socket.id][0]]: messages })
-  })
-
-  socket.on('disconnect', () => {
-    delete userNames[socket.id]
-  })
-
-  socket.on('get clients', () => {
-    if (
-      typeof userNames[socket.id] !== 'undefined' &&
-      userNames[socket.id].indexOf('admin') !== -1
-    ) {
-      socket.emit('all users', userNames)
-    }
-  })
-
-  socket.on('disconnect user', (id) => {
-    io.to(id).emit('delete cookie')
-    io.of('/').in(id).disconnectSockets()
-    delete userNames[id]
-  })
-})
-*/
 
 httpServer.listen(port)
 console.log(`Serving at http://localhost:${port}`)

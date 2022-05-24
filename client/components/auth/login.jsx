@@ -29,10 +29,10 @@ const LoginForm = () => {
   }
 
   return (
-    <main className="relative flex flex-col h-full w-full justify-center items-center font-mono font-semibold bg-slate-400">
+    <main className="relative flex flex-col h-full w-full justify-center items-center font-mono font-semibold bg-slate-500">
       <p className="absolute bottom-2 right-2 text-amber-300">f l o o d a r y</p>
-      <div className="w-min bg-slate-500 p-4 rounded-md shadow-lg shadow-amber-300">
-        <form className="w-min text-gray-800">
+      <div className="w-min bg-slate-600 p-4 rounded-md shadow-lg shadow-amber-300">
+        <form className="w-min text-gray-200">
           <div className="flex flex-col w-60">
             <div className="flex flex-col gap-y-1">
               <label className="self-end" htmlFor="nickname">
@@ -118,7 +118,7 @@ const LoginForm = () => {
             </div>
             <div className="flex justify-between my-2">
               <button
-                className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+                className="bg-slate-700 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-800"
                 type="button"
                 onClick={() => {
                   dispatch(signIn())
@@ -128,7 +128,7 @@ const LoginForm = () => {
               </button>
               <p className="p-1">or</p>
               <button
-                className="bg-slate-400 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+                className="bg-slate-700 font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-800"
                 type="button"
                 onClick={() => {
                   dispatch(signUp())
@@ -139,14 +139,14 @@ const LoginForm = () => {
             </div>
             {token && (
               <button
-                className="group bg-slate-400 grow font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-600"
+                className="group bg-slate-700 grow font-semibold text-xs rounded-md px-4 py-1 transition-colors duration-200 hover:text-amber-300 hover:bg-slate-800"
                 type="button"
                 onClick={() => {
                   dispatch(signInAs())
                 }}
               >
                 Or continue as{' '}
-                <span className="text-amber-900 transition-colors duration-200 group-hover:text-amber-500">
+                <span className="text-amber-300 transition-colors duration-200 group-hover:text-amber-500">
                   {user.login}
                 </span>
               </button>
