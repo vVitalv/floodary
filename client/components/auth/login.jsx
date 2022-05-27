@@ -16,8 +16,11 @@ const MAX_USERNAME_LENGTH = 20
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const { login, password, user, token, authErrMessage } = useSelector((store) => store.auth)
-  const { errorMessage } = authErrMessage
+  const { login } = useSelector((store) => store.auth)
+  const { password } = useSelector((store) => store.auth)
+  const { user } = useSelector((store) => store.auth)
+  const { token } = useSelector((store) => store.auth)
+  const { errorMessage } = useSelector((store) => store.auth.authErrMessage)
   const svgColor = (errType, label, minLength) => {
     if (errorMessage.includes(errType)) {
       return '#f87171'
@@ -158,5 +161,4 @@ const LoginForm = () => {
   )
 }
 
-LoginForm.propTypes = {}
-export default React.memo(LoginForm)
+export default LoginForm

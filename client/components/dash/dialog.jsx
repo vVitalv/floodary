@@ -56,6 +56,4 @@ const Dialog = () => {
   )
 }
 
-Dialog.propTypes = {}
-
-export default React.memo(Dialog)
+export default Dialog

@@ -80,6 +80,4 @@ const Rooms = () => {
   )
 }
 
-Rooms.propTypes = {}
-
-export default React.memo(Rooms)
+export default Rooms

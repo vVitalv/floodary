@@ -37,6 +37,4 @@ const TypeMessage = () => {
   )
 }
 
-TypeMessage.propTypes = {}
-
-export default React.memo(TypeMessage)
+export default TypeMessage

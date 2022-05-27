@@ -28,6 +28,4 @@ const Header = () => {
   )
 }
 
-Header.propTypes = {}
-
-export default React.memo(Header)
+export default Header

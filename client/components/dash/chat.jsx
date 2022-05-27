@@ -14,6 +14,4 @@ const Chat = () => {
   )
 }
 
-Chat.propTypes = {}
-
-export default React.memo(Chat)
+export default Chat

@@ -36,6 +36,4 @@ const UserList = () => {
   )
 }
 
-UserList.propTypes = {}
-
-export default React.memo(UserList)
+export default UserList

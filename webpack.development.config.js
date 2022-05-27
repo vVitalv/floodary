@@ -55,7 +55,7 @@ const config = {
         target: `http://localhost:${process.env.PORT || 8090}`,
         changeOrigin: true,
         secure: false,
-        ws: true
+        ws: process.env.ENABLE_SOCKETS
       }
     ]
   },
@@ -154,7 +154,6 @@ const config = {
         sockIntegration: 'wds'
       }
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin(
       Object.keys(process.env).reduce(
         (res, key) => ({ ...res, [key]: JSON.stringify(process.env[key]) }),
